@@ -484,6 +484,155 @@ a {
   color: #40505c;
 }
 
+.article-body h2 {
+  margin: 42px 0 14px;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.22;
+}
+
+.article-body h3 {
+  margin: 28px 0 12px;
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+.article-body .lead {
+  color: #40505c;
+  font-size: 17px;
+  line-height: 1.82;
+}
+
+.article-body table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 18px 0 28px;
+  font-size: 14px;
+}
+
+.article-body th,
+.article-body td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-body th {
+  background: var(--soft);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.article-body pre {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  background: var(--code);
+  color: var(--code-text);
+  margin: 18px 0 28px;
+  padding: 18px;
+  line-height: 1.65;
+}
+
+.article-body :not(pre) > code {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--soft);
+  padding: 0.1em 0.35em;
+  color: var(--ink);
+  font-size: 0.92em;
+}
+
+.article-body .diagram {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  margin: 18px 0 28px;
+  padding: 16px;
+}
+
+.article-body .diagram pre {
+  margin: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.article-body .grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 18px 0 28px;
+}
+
+.article-body .grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.article-body .card,
+.article-body .note,
+.article-body .step {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: 18px;
+}
+
+.article-body .card h3 {
+  margin-top: 0;
+}
+
+.article-body .note {
+  background: var(--soft-2);
+  margin: 18px 0 28px;
+}
+
+.article-body .warning {
+  background: var(--soft-3);
+}
+
+.article-body .timeline {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 28px;
+}
+
+.article-body .step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.article-body .step b {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.article-body .pill-list,
+.article-body .source-list {
+  padding-left: 1.2em;
+}
+
+.article-body .pill-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 24px;
+}
+
+.article-body .mini-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 18px 0 28px;
+}
+
 .empty-state {
   border: 1px solid var(--line);
   border-radius: var(--radius);
