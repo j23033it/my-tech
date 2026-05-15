@@ -1,0 +1,19 @@
+{
+  "name": "my-tech",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "pagefind": "pagefind --site dist",
+    "build:search": "astro build && pagefind --site dist"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "pagefind": "^1.3.0"
+  }
+}

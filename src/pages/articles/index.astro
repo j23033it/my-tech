@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const articles = await getCollection("articles");
+const sortedArticles = articles.sort((a, b) => {
+  return new Date(b.data.updated).getTime() - new Date(a.data.updated).getTime();
+});
+---
+
+<BaseLayout title="記事一覧 | My Tech Guide" description="My Tech Guideの記事一覧です。">
+  <main class="listing-page">
+    <header class="page-header">
+      <a href="/">← トップへ戻る</a>
+      <h1>記事一覧</h1>
+      <p>現在作成済み、または作成予定の記事をまとめています。</p>
+    </header>
+    <section class="article-list compact" aria-label="記事一覧">
+      {sortedArticles.map((article) => (
+        <article class="article-card">
+          <a href={`/articles/${article.id.replace(/\.md$/, "")}/`}>
+            <span class="article-category">{article.data.category}</span>
+            <h2>{article.data.title}</h2>
+            <p>{article.data.description}</p>
+            <time datetime={article.data.updated}>{article.data.updated}</time>
+          </a>
+        </article>
+      ))}
+    </section>
+  </main>
+</BaseLayout>

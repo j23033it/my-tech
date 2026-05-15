@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { categories, getCategory } from "../../lib/categories";
+
+export async function getStaticPaths() {
+  return categories.map((category) => ({
+    params: { slug: category.slug }
+  }));
+}
+
+const slug = Astro.params.slug ?? "";
+const category = getCategory(slug);
+const articles = (await getCollection("articles")).filter((article) => {
+  return article.data.categorySlug === slug;
+});
+---
+
+<BaseLayout
+  title={`${category?.name ?? "カテゴリ"} | My Tech Guide`}
+  description={category?.description ?? "My Tech Guideのカテゴリ別記事一覧です。"}
+>
+  <main class="listing-page">
+    <header class="page-header">
+      <a href="/">← トップへ戻る</a>
+      <h1>{category?.name}</h1>
+      <p>{category?.description}</p>
+    </header>
+    <section class="article-list compact" aria-label={`${category?.name}の記事一覧`}>
+      {articles.length > 0 ? (
+        articles.map((article) => (
+          <article class="article-card">
+            <a href={`/articles/${article.id.replace(/\.md$/, "")}/`}>
+              <span class="article-category">{article.data.category}</span>
+              <h2>{article.data.title}</h2>
+              <p>{article.data.description}</p>
+              <time datetime={article.data.updated}>{article.data.updated}</time>
+            </a>
+          </article>
+        ))
+      ) : (
+        <p class="empty-state">このカテゴリの記事はこれから追加します。</p>
+      )}
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,119 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { categories } from "../lib/categories";
+
+const articles = await getCollection("articles");
+const sortedArticles = articles.sort((a, b) => {
+  return new Date(b.data.updated).getTime() - new Date(a.data.updated).getTime();
+});
+
+const articleCounts = categories.map((category) => ({
+  ...category,
+  count: articles.filter((article) => article.data.categorySlug === category.slug).length
+}));
+---
+
+<BaseLayout
+  title="My Tech Guide | 技術の地図を、自分の言葉で育てる"
+  description="Web、プログラミング言語、AI、開発ツールまで。あとから読み返して理解できる技術ノートをカテゴリごとに整理します。"
+>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/" aria-label="My Tech Guide トップへ">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <rect x="10" y="9" width="44" height="46" rx="8"></rect>
+              <path d="M22 22h20M22 32h15M22 42h20"></path>
+            </svg>
+          </span>
+          <span>My Tech Guide</span>
+        </a>
+        <nav class="primary-nav" aria-label="主要ナビゲーション">
+          <a href="#categories">カテゴリ</a>
+          <a href="/articles/">記事一覧</a>
+          <a href="#search">検索</a>
+        </nav>
+        <label class="search" id="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"></path>
+          </svg>
+          <input type="search" placeholder="記事を検索" aria-label="記事を検索" />
+        </label>
+        <a class="github-link" href="https://github.com/j23033it/my-tech">GitHub</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <h1 id="hero-title">技術の地図を、<br />自分の言葉で育てる。</h1>
+            <p>
+              Web、プログラミング言語、AI、開発ツールまで。あとから読み返して理解できる技術ノートをカテゴリごとに整理します。
+            </p>
+            <a class="button-primary" href="/articles/">記事一覧を見る</a>
+          </div>
+
+          <nav class="knowledge-map" aria-label="技術カテゴリの地図">
+            <div class="map-heading">
+              <span>技術の地図</span>
+              <small>カテゴリから読む</small>
+            </div>
+            <div class="map-list">
+              {categories.map((category, index) => (
+                <a class={`map-row ${category.accent}`} href={`/categories/${category.slug}/`}>
+                  <span class="map-index">{String(index + 1).padStart(2, "0")}</span>
+                  <span>
+                    <strong>{category.name}</strong>
+                    <small>{category.description}</small>
+                  </span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12h13M13 6l6 6-6 6"></path>
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </nav>
+        </div>
+      </section>
+
+      <section class="article-index" aria-labelledby="latest-title">
+        <div class="content-grid">
+          <aside class="category-summary" id="categories" aria-labelledby="category-summary-title">
+            <h2 id="category-summary-title">カテゴリ</h2>
+            <p>記事数のサマリーです。読むカテゴリは上の地図から選べます。</p>
+            <ul>
+              {articleCounts.map((category) => (
+                <li>
+                  <span>{category.name}</span>
+                  <strong>{category.count}件</strong>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          <div class="latest-area">
+            <div class="section-heading">
+              <h2 id="latest-title">最新の記事</h2>
+              <a href="/articles/">すべて見る</a>
+            </div>
+            <div class="article-list">
+              {sortedArticles.map((article) => (
+                <article class="article-card">
+                  <a href={`/articles/${article.id.replace(/\.md$/, "")}/`}>
+                    <span class="article-category">{article.data.category}</span>
+                    <h3>{article.data.title}</h3>
+                    <p>{article.data.description}</p>
+                    <time datetime={article.data.updated}>{article.data.updated}</time>
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>

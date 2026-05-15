@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+
+  return articles.map((article) => ({
+    params: { slug: article.id.replace(/\.md$/, "") },
+    props: { article }
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+---
+
+<BaseLayout title={`${article.data.title} | My Tech Guide`} description={article.data.description}>
+  <main class="article-page">
+    <a href="/articles/">← 記事一覧へ戻る</a>
+    <article class="article-body">
+      <header>
+        <span class="article-category">{article.data.category}</span>
+        <h1>{article.data.title}</h1>
+        <p>{article.data.description}</p>
+        <time datetime={article.data.updated}>更新日: {article.data.updated}</time>
+      </header>
+      <Content />
+    </article>
+  </main>
+</BaseLayout>
