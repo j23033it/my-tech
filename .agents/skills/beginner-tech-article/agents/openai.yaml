@@ -1,0 +1,6 @@
+interface:
+  display_name: "初心者向け技術記事"
+  short_description: "信頼できる情報源で技術記事を作成"
+  default_prompt: "Use $beginner-tech-article to research and write a beginner-friendly technical article, then commit the result."
+policy:
+  allow_implicit_invocation: true
