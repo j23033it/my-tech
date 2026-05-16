@@ -12,20 +12,93 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const { Content } = await article.render();
+const renderResult = await article.render();
+const { Content } = renderResult;
+const sectionHeadings = Array.from(
+  article.body.matchAll(/<section\s+id="([^"]+)"[^>]*>\s*<h2[^>]*>(.*?)<\/h2>/gs)
+).map((match) => ({
+  id: match[1],
+  text: match[2].replace(/<[^>]+>/g, "").replace(/^\d+\.\s*/, "").trim()
+}));
+const tocItems = sectionHeadings.length > 0
+  ? sectionHeadings
+  : (renderResult.headings ?? [])
+      .filter((heading) => heading.depth === 2)
+      .map((heading) => ({ id: heading.slug, text: heading.text }));
 ---
 
 <BaseLayout title={`${article.data.title} | My Tech Guide`} description={article.data.description}>
   <main class="article-page">
-    <a href="/articles/">← 記事一覧へ戻る</a>
-    <article class="article-body">
-      <header>
-        <span class="article-category">{article.data.category}</span>
-        <h1>{article.data.title}</h1>
-        <p>{article.data.description}</p>
-        <time datetime={article.data.updated}>更新日: {article.data.updated}</time>
-      </header>
-      <Content />
-    </article>
+    <a class="article-back-link" href="/articles/">← 記事一覧へ戻る</a>
+    <div class="article-layout">
+      {tocItems.length > 0 && (
+        <aside class="article-toc" aria-label="記事の目次">
+          <p>目次</p>
+          <ol>
+            {tocItems.map((item) => (
+              <li><a href={`#${item.id}`}>{item.text}</a></li>
+            ))}
+          </ol>
+        </aside>
+      )}
+      <article class="article-body">
+        <header>
+          <span class="article-category">{article.data.category}</span>
+          <h1>{article.data.title}</h1>
+          <p>{article.data.description}</p>
+          <time datetime={article.data.updated}>更新日: {article.data.updated}</time>
+        </header>
+        <Content />
+      </article>
+    </div>
   </main>
+  <script>
+    const scrollToArticleSection = (hash, shouldPushState = true) => {
+      const targetId = decodeURIComponent(hash.replace(/^#/, ""));
+      const target = document.getElementById(targetId);
+
+      if (!target) {
+        return;
+      }
+
+      if (shouldPushState) {
+        history.pushState(null, "", `#${encodeURIComponent(targetId)}`);
+      }
+
+      const move = () => {
+        const top = target.getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({
+          top,
+          behavior: "auto"
+        });
+      };
+
+      move();
+      window.setTimeout(move, 120);
+      window.setTimeout(move, 400);
+      window.setTimeout(move, 900);
+      window.setTimeout(move, 1400);
+    };
+
+    document.querySelectorAll('.article-toc a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (!(link instanceof HTMLAnchorElement)) {
+          return;
+        }
+
+        const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+
+        if (!target) {
+          return;
+        }
+
+        event.preventDefault();
+        scrollToArticleSection(link.hash);
+      });
+    });
+
+    if (window.location.hash) {
+      requestAnimationFrame(() => scrollToArticleSection(window.location.hash, false));
+    }
+  </script>
 </BaseLayout>
