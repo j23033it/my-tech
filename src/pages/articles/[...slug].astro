@@ -29,7 +29,10 @@ const tocItems = sectionHeadings.length > 0
 
 <BaseLayout title={`${article.data.title} | My Tech Guide`} description={article.data.description}>
   <main class="article-page">
-    <a class="article-back-link" href="/articles/">← 記事一覧へ戻る</a>
+    <nav class="article-page-links" aria-label="記事ページの移動">
+      <a class="article-back-link" href="/">← My Tech Guide</a>
+      <a class="article-back-link" href="/articles/">← 記事一覧へ戻る</a>
+    </nav>
     <div class="article-layout">
       {tocItems.length > 0 && (
         <aside class="article-toc" aria-label="記事の目次">

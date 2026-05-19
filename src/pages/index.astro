@@ -102,7 +102,7 @@ const articleCounts = categories.map((category) => ({
             <div class="article-list">
               {sortedArticles.map((article) => (
                 <article class="article-card">
-                  <a href={`/articles/${article.id.replace(/\.md$/, "")}/`}>
+                  <a href={`/articles/${article.id.replace(/\.(md|mdx)$/, "")}/`}>
                     <span class="article-category">{article.data.category}</span>
                     <h3>{article.data.title}</h3>
                     <p>{article.data.description}</p>

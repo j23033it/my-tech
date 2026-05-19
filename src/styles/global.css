@@ -451,9 +451,15 @@ a {
   align-items: start;
 }
 
+.article-page-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-bottom: 22px;
+}
+
 .article-back-link {
   display: inline-block;
-  margin-bottom: 22px;
 }
 
 .page-header {
