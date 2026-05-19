@@ -1,0 +1,1293 @@
+---
+title: "Pythonデータ構造 演習問題集"
+description: "リスト、タプル、辞書、集合、ループ処理を手を動かしながら確認できるPython初学者向けの演習問題集。"
+category: "プログラミング言語"
+categorySlug: "languages"
+tags: ["Python","データ構造","リスト","辞書","演習問題"]
+level: "beginner"
+updated: "2026-05-19"
+draft: false
+---
+
+import AnswerToggle from "../../../components/AnswerToggle.astro";
+
+<p class="lead">Pythonのリスト、タプル、辞書、集合を、実際にコードを書きながら身につけるための演習問題集です。問題ごとに段階ヒントと解答例を用意しているので、まず自力で考え、必要なところだけ確認しながらアウトプットできます。</p>
+
+<div class="note">
+  <strong>使い方:</strong> まず問題を読んでPythonファイルに自分の答えを書き、実行してからヒントや解答を開いて確認してください。解答はページを開いた直後は隠れています。表示状態は保存しないため、ページを開き直すとすべて閉じた状態に戻ります。
+</div>
+
+> **対象:** リスト・タプル・辞書・集合 ＋ ループ処理の基礎〜応用
+> **目標:** この問題集に取り組むだけで、基礎的なデータ構造を自力で扱えるようになる
+
+---
+
+## 学習の進め方
+
+1. 問題文を読む
+2. まず自力で考えてみる（5〜10分）
+3. 詰まったらヒントを順番に読む（一気に全部読まないこと！）
+4. 自力で答えを書いてみる
+5. 最後に「解答」を確認する
+
+---
+
+## 第1章: リスト（list）
+
+> **ポイント:** リストは「順番のある、変更できる」データの入れ物。`[]` で作る。
+
+---
+
+### 問題 1-1: リストの基本操作
+
+**問題:**
+以下のリストを使って、指示通りに操作してください。
+
+```python
+fruits = ["apple", "banana", "cherry"]
+```
+
+1. `"banana"` を取り出して表示せよ
+2. リストの末尾に `"mango"` を追加せよ
+3. `"cherry"` を `"grape"` に変更せよ
+4. リストの長さを表示せよ
+5. 最終的なリストを表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+- リストの要素は **インデックス番号** でアクセスできる
+- インデックスは **0から始まる**（`"apple"` は `fruits[0]`、`"banana"` は `fruits[?]`）
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+- 要素を追加するには `リスト.append(値)` を使う
+- 要素を変更するには `リスト[インデックス] = 新しい値` のように代入する
+- リストの長さは `len(リスト)` で取得できる
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+# インデックスの例
+fruits[0]  # "apple"
+fruits[1]  # "banana"
+fruits[2]  # "cherry"
+```
+
+`"cherry"` を `"grape"` に変えるには `fruits[2] = "grape"` と書く。
+
+</details>
+
+<AnswerToggle>
+
+```python
+fruits = ["apple", "banana", "cherry"]
+
+# 1. "banana" を取り出して表示
+print(fruits[1])  # banana
+
+# 2. 末尾に "mango" を追加
+fruits.append("mango")
+
+# 3. "cherry" を "grape" に変更
+fruits[2] = "grape"
+
+# 4. リストの長さを表示
+print(len(fruits))  # 4
+
+# 5. 最終的なリストを表示
+print(fruits)  # ['apple', 'banana', 'grape', 'mango']
+```
+
+**解説:**
+- `append()` は末尾への追加。先頭や途中に挿入したい場合は `insert(インデックス, 値)` を使う
+- インデックスで代入すると、その位置の値を上書きできる
+
+</AnswerToggle>
+
+---
+
+### 問題 1-2: リストのスライス
+
+**問題:**
+以下のリストから指定した範囲を取り出してください。
+
+```python
+numbers = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+```
+
+1. 最初の3要素（`[10, 20, 30]`）を取り出せ
+2. 後ろの3要素（`[80, 90, 100]`）を取り出せ
+3. インデックス2から5の要素（`[30, 40, 50, 60]`）を取り出せ
+4. 1つおきに要素を取り出せ（`[10, 30, 50, 70, 90]`）
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+Pythonのリストは **スライス** という方法で範囲取り出しができる。
+書き方: `リスト[開始:終了]`
+
+- `終了` のインデックスの要素は **含まれない**（重要！）
+- 例: `numbers[0:3]` → インデックス0, 1, 2 の要素 → `[10, 20, 30]`
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+- 開始や終了を省略できる
+  - `numbers[:3]` → 最初から3つ
+  - `numbers[7:]` → インデックス7から最後まで
+- マイナスインデックスで後ろから数えられる
+  - `numbers[-3:]` → 後ろから3つ
+
+</details>
+
+<details>
+<summary>💡 ヒント3（ステップ）</summary>
+
+スライスには **ステップ（間隔）** も指定できる。
+書き方: `リスト[開始:終了:ステップ]`
+
+- `numbers[::2]` → 最初から最後まで、2つおき
+
+</details>
+
+<AnswerToggle>
+
+```python
+numbers = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+# 1. 最初の3要素
+print(numbers[:3])      # [10, 20, 30]
+
+# 2. 後ろの3要素
+print(numbers[-3:])     # [80, 90, 100]
+
+# 3. インデックス2から5
+print(numbers[2:6])     # [30, 40, 50, 60]
+
+# 4. 1つおきに取り出す
+print(numbers[::2])     # [10, 30, 50, 70, 90]
+```
+
+**解説:**
+スライスの `終了` は「その直前まで」なので、インデックス2〜5を取り出すには `[2:6]` と書く。最初は直感と違うので注意。
+
+</AnswerToggle>
+
+---
+
+### 問題 1-3: リストのメソッド
+
+**問題:**
+以下の操作を行ってください。
+
+```python
+scores = [85, 92, 78, 95, 88, 72, 91]
+```
+
+1. スコアを昇順（小さい順）に並べ替えよ
+2. 並べ替え後、最高点・最低点・合計点を表示せよ
+3. `95` が何番目（インデックス）にあるか調べよ
+4. `88` をリストから削除せよ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+Pythonには便利な組み込み関数がある:
+- `sorted(リスト)` → 新しいソート済みリストを返す（元は変わらない）
+- `リスト.sort()` → 元のリストを直接ソートする（返り値はNone）
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+- 最大値: `max(リスト)`
+- 最小値: `min(リスト)`
+- 合計: `sum(リスト)`
+- インデックス検索: `リスト.index(値)`
+
+</details>
+
+<details>
+<summary>💡 ヒント3</summary>
+
+要素の削除方法は2種類:
+- `リスト.remove(値)` → 値を指定して削除（最初に見つかったものを削除）
+- `del リスト[インデックス]` → インデックスを指定して削除
+
+</details>
+
+<AnswerToggle>
+
+```python
+scores = [85, 92, 78, 95, 88, 72, 91]
+
+# 1. 昇順に並べ替え
+scores.sort()
+print(scores)  # [72, 78, 85, 88, 91, 92, 95]
+
+# 2. 最高点・最低点・合計点
+print("最高点:", max(scores))   # 95
+print("最低点:", min(scores))   # 72
+print("合計点:", sum(scores))   # 601
+
+# 3. 95 のインデックス
+print(scores.index(95))  # 6
+
+# 4. 88 を削除
+scores.remove(88)
+print(scores)  # [72, 78, 85, 91, 92, 95]
+```
+
+**解説:**
+`sort()` は元のリストを直接変更する（破壊的操作）。元を残したい場合は `sorted()` を使う。
+
+</AnswerToggle>
+
+---
+
+## 第2章: タプル（tuple）
+
+> **ポイント:** タプルは「順番のある、変更できない」データの入れ物。`()` で作る。
+> リストと似ているが、**一度作ったら変えられない**のが最大の特徴。
+
+---
+
+### 問題 2-1: タプルの基本
+
+**問題:**
+以下のタプルを使って操作してください。
+
+```python
+coordinates = (35.6762, 139.6503)  # 東京の緯度・経度
+```
+
+1. 緯度（最初の値）を取り出して表示せよ
+2. タプルの長さを表示せよ
+3. `35.6762` がタプルに含まれているか確認せよ
+4. タプルをリストに変換せよ
+5. なぜ座標のデータにはリストよりタプルが適しているか、考えてみよ（コードではなく文章で）
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+タプルの要素へのアクセスはリストと同じ。
+- `coordinates[0]` → 最初の要素（緯度）
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+- `len()` はタプルにも使える
+- 要素が含まれているかの確認には `in` 演算子を使う
+  - 書き方: `値 in タプル` → `True` または `False` を返す
+
+</details>
+
+<details>
+<summary>💡 ヒント3</summary>
+
+- `list(タプル)` でリストに変換できる
+- 逆に `tuple(リスト)` でタプルに変換できる
+
+</details>
+
+<AnswerToggle>
+
+```python
+coordinates = (35.6762, 139.6503)
+
+# 1. 緯度を取り出す
+print(coordinates[0])  # 35.6762
+
+# 2. 長さを表示
+print(len(coordinates))  # 2
+
+# 3. 含まれているか確認
+print(35.6762 in coordinates)  # True
+
+# 4. リストに変換
+coord_list = list(coordinates)
+print(coord_list)  # [35.6762, 139.6503]
+
+# 5. 考察（例）
+# → 座標は変わってはいけないデータ。タプルなら変更不可なので
+#    誤って値を書き換えてしまうミスを防げる。
+```
+
+**解説:**
+タプルを使うべき場面の目安:
+- 変わってほしくないデータ（座標、RGBカラーコードなど）
+- 辞書のキーとして使いたい場合（リストはキーにできない）
+
+</AnswerToggle>
+
+---
+
+### 問題 2-2: タプルのアンパック
+
+**問題:**
+**アンパック**とはタプルの値を複数の変数に一度に代入する便利な方法です。
+
+```python
+person = ("田中太郎", 21, "情報工学科")
+```
+
+1. アンパックを使って、`name`・`age`・`department` の3変数に代入せよ
+2. それぞれの変数を表示せよ
+3. 以下の関数の戻り値をアンパックして受け取れ
+
+```python
+def get_min_max(numbers):
+    return min(numbers), max(numbers)
+
+data = [4, 1, 8, 2, 9, 3]
+# ここにコードを書く
+```
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+アンパックの基本形:
+```python
+a, b, c = (1, 2, 3)
+# a=1, b=2, c=3 になる
+```
+左辺の変数の数と、タプルの要素数を合わせる必要がある。
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+Pythonの関数は `return a, b` のように書くと、**タプルとして返す**。
+受け取り側も同様にアンパックできる。
+
+```python
+minimum, maximum = get_min_max(data)
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+person = ("田中太郎", 21, "情報工学科")
+
+# 1 & 2. アンパックして表示
+name, age, department = person
+print(name)        # 田中太郎
+print(age)         # 21
+print(department)  # 情報工学科
+
+# 3. 関数の戻り値をアンパック
+def get_min_max(numbers):
+    return min(numbers), max(numbers)
+
+data = [4, 1, 8, 2, 9, 3]
+minimum, maximum = get_min_max(data)
+print(f"最小値: {minimum}, 最大値: {maximum}")  # 最小値: 1, 最大値: 9
+```
+
+**解説:**
+アンパックは可読性が上がり、Pythonらしい書き方のひとつ。
+`x, y = y, x` のように書くと、変数の値を一行でスワップ（交換）できる。
+
+</AnswerToggle>
+
+---
+
+## 第3章: 辞書（dict）
+
+> **ポイント:** 辞書は「キーと値のペア」で管理するデータの入れ物。`{}` で作る。
+> インデックスの代わりに**キー**でアクセスする。
+
+---
+
+### 問題 3-1: 辞書の基本操作
+
+**問題:**
+以下の辞書を使って操作してください。
+
+```python
+student = {
+    "name": "鈴木花子",
+    "age": 20,
+    "major": "経済学",
+    "gpa": 3.5
+}
+```
+
+1. `"name"` の値を取り出して表示せよ
+2. `"gpa"` を `3.8` に更新せよ
+3. `"university": "○○大学"` を新たに追加せよ
+4. `"age"` キーを削除せよ
+5. 辞書にキー `"major"` が存在するか確認せよ
+6. 最終的な辞書を表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+辞書の値へのアクセス:
+- `辞書["キー"]` → 値を取得（キーが存在しないとエラー）
+- `辞書.get("キー")` → 値を取得（キーが存在しない場合は `None` を返す）
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+- 更新・追加は同じ書き方: `辞書["キー"] = 値`
+  - キーが存在すれば更新、存在しなければ新規追加
+- 削除: `del 辞書["キー"]`
+
+</details>
+
+<details>
+<summary>💡 ヒント3</summary>
+
+キーの存在確認には `in` 演算子を使う:
+```python
+"major" in student  # True または False
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+student = {
+    "name": "鈴木花子",
+    "age": 20,
+    "major": "経済学",
+    "gpa": 3.5
+}
+
+# 1. name を取り出す
+print(student["name"])  # 鈴木花子
+
+# 2. gpa を更新
+student["gpa"] = 3.8
+
+# 3. university を追加
+student["university"] = "○○大学"
+
+# 4. age を削除
+del student["age"]
+
+# 5. major が存在するか確認
+print("major" in student)  # True
+
+# 6. 最終的な辞書を表示
+print(student)
+# {'name': '鈴木花子', 'major': '経済学', 'gpa': 3.8, 'university': '○○大学'}
+```
+
+</AnswerToggle>
+
+---
+
+### 問題 3-2: 辞書のメソッド
+
+**問題:**
+以下の辞書を使って操作してください。
+
+```python
+menu = {
+    "ラーメン": 850,
+    "餃子": 350,
+    "チャーハン": 750,
+    "唐揚げ": 500
+}
+```
+
+1. すべてのキー（メニュー名）を表示せよ
+2. すべての値（値段）を表示せよ
+3. キーと値のペアをすべて表示せよ（`"ラーメン: 850円"` の形式で）
+4. `"カレー"` のキーの値を取得せよ。キーが存在しない場合は `"メニューにありません"` と表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+辞書の主なメソッド:
+- `辞書.keys()` → すべてのキーを返す
+- `辞書.values()` → すべての値を返す
+- `辞書.items()` → (キー, 値) のタプルのペアを返す
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+`.items()` を使うと、キーと値を同時に取り出せる:
+```python
+for key, value in menu.items():
+    print(key, value)
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3</summary>
+
+`get()` メソッドは第2引数にデフォルト値を指定できる:
+```python
+辞書.get("存在しないキー", "デフォルト値")
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+menu = {
+    "ラーメン": 850,
+    "餃子": 350,
+    "チャーハン": 750,
+    "唐揚げ": 500
+}
+
+# 1. すべてのキーを表示
+print(menu.keys())   # dict_keys(['ラーメン', '餃子', 'チャーハン', '唐揚げ'])
+
+# 2. すべての値を表示
+print(menu.values()) # dict_values([850, 350, 750, 500])
+
+# 3. キーと値のペアを表示
+for name, price in menu.items():
+    print(f"{name}: {price}円")
+
+# 出力:
+# ラーメン: 850円
+# 餃子: 350円
+# チャーハン: 750円
+# 唐揚げ: 500円
+
+# 4. 存在しないキーを安全に取得
+result = menu.get("カレー", "メニューにありません")
+print(result)  # メニューにありません
+```
+
+</AnswerToggle>
+
+---
+
+## 第4章: 集合（set）
+
+> **ポイント:** 集合は「重複なし、順番なし」のデータの入れ物。`{}` または `set()` で作る。
+> **数学の集合**と同じ概念（和集合・積集合・差集合が使える）。
+
+---
+
+### 問題 4-1: 集合の基本操作
+
+**問題:**
+以下の集合を使って操作してください。
+
+```python
+tags_a = {"Python", "AI", "データ分析", "機械学習"}
+tags_b = {"Java", "AI", "Web開発", "機械学習", "Python"}
+```
+
+1. `tags_a` に `"統計学"` を追加せよ
+2. `tags_a` から `"データ分析"` を削除せよ
+3. `tags_a` と `tags_b` 両方に含まれるタグ（積集合）を求めよ
+4. `tags_a` か `tags_b` のどちらかに含まれるタグ（和集合）を求めよ
+5. `tags_a` にあって `tags_b` にないタグ（差集合）を求めよ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+集合の要素の追加・削除:
+- 追加: `集合.add(値)` （リストの `append` に相当）
+- 削除: `集合.remove(値)` または `集合.discard(値)`
+  - `remove` は存在しない値を削除しようとするとエラー
+  - `discard` はエラーにならない
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+集合演算の書き方（2通りある）:
+
+| 演算 | 演算子 | メソッド |
+|------|--------|---------|
+| 積集合（共通部分） | `&` | `.intersection()` |
+| 和集合 | `\|` | `.union()` |
+| 差集合 | `-` | `.difference()` |
+
+</details>
+
+<AnswerToggle>
+
+```python
+tags_a = {"Python", "AI", "データ分析", "機械学習"}
+tags_b = {"Java", "AI", "Web開発", "機械学習", "Python"}
+
+# 1. "統計学" を追加
+tags_a.add("統計学")
+
+# 2. "データ分析" を削除
+tags_a.remove("データ分析")
+
+# 現在の tags_a: {"Python", "AI", "機械学習", "統計学"}
+
+# 3. 積集合（両方に含まれるもの）
+print(tags_a & tags_b)
+# {'Python', 'AI', '機械学習'}
+
+# 4. 和集合（どちらかに含まれるもの）
+print(tags_a | tags_b)
+# {'Python', 'AI', '機械学習', '統計学', 'Java', 'Web開発'}
+
+# 5. 差集合（tags_a にあって tags_b にないもの）
+print(tags_a - tags_b)
+# {'統計学'}
+```
+
+**解説:**
+集合は「重複を排除したい」「共通部分を求めたい」場面で強力。
+例: 2つのユーザーリストの共通フォロワーを調べる、など。
+
+</AnswerToggle>
+
+---
+
+### 問題 4-2: 重複の除去
+
+**問題:**
+以下のリストには重複する要素が含まれています。集合を使って重複を取り除いてください。
+
+```python
+access_log = ["Alice", "Bob", "Alice", "Carol", "Bob", "Bob", "Dave", "Alice"]
+```
+
+1. ユニークなユーザー名のリストを作れ（順番は問わない）
+2. 何人のユニークユーザーがいるか表示せよ
+3. 元のリストを変えず、ユニークなリストを作れ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+集合に変換すると、自動的に重複が取り除かれる:
+```python
+set(リスト)  # リストを集合に変換
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+集合を `list()` でリストに戻せる:
+```python
+list(set(リスト))
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+access_log = ["Alice", "Bob", "Alice", "Carol", "Bob", "Bob", "Dave", "Alice"]
+
+# 1. ユニークなユーザー名のリスト
+unique_users = list(set(access_log))
+print(unique_users)  # ['Alice', 'Bob', 'Carol', 'Dave']（順番は変わる可能性あり）
+
+# 2. ユニークユーザー数
+print(len(set(access_log)))  # 4
+
+# 3. 元のリストを変えず（元から変えていないので同じ）
+print(access_log)  # 元のまま
+```
+
+</AnswerToggle>
+
+---
+
+## 第5章: ループ処理との組み合わせ（発展）
+
+> **ポイント:** `for` 文と `while` 文を使って、データ構造の中身を繰り返し処理する。
+
+---
+
+### 問題 5-1: for文 × リスト
+
+**問題:**
+
+```python
+temperatures = [28.5, 31.2, 25.8, 33.1, 29.7, 26.4, 34.0]
+```
+
+1. すべての気温を表示せよ（`"○○℃"` の形式で）
+2. 30℃以上の日の気温だけを表示せよ
+3. 気温の平均値を計算して表示せよ（`sum()` や `len()` を使わず、ループで計算せよ）
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+for文でリストを繰り返す基本:
+```python
+for item in リスト:
+    # item に各要素が入る
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+条件分岐と組み合わせる:
+```python
+for temp in temperatures:
+    if temp >= 30:
+        print(temp)
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（平均の計算）</summary>
+
+ループで合計を積み上げてから、件数で割る:
+```python
+total = 0
+count = 0
+for temp in temperatures:
+    total += temp   # 合計に加算（total = total + temp と同じ）
+    count += 1
+average = total / count
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+temperatures = [28.5, 31.2, 25.8, 33.1, 29.7, 26.4, 34.0]
+
+# 1. すべての気温を表示
+for temp in temperatures:
+    print(f"{temp}℃")
+
+# 2. 30℃以上だけ表示
+print("--- 30℃以上 ---")
+for temp in temperatures:
+    if temp >= 30:
+        print(f"{temp}℃")
+
+# 3. 平均値をループで計算
+total = 0
+count = 0
+for temp in temperatures:
+    total += temp
+    count += 1
+average = total / count
+print(f"平均気温: {average:.1f}℃")  # 平均気温: 29.8℃
+```
+
+**解説:**
+`:.1f` は小数点1桁までの表示形式。f文字列（f-string）の書式指定。
+
+</AnswerToggle>
+
+---
+
+### 問題 5-2: for文 × 辞書
+
+**問題:**
+
+```python
+class_scores = {
+    "田中": 78,
+    "鈴木": 92,
+    "佐藤": 65,
+    "山田": 88,
+    "伊藤": 71
+}
+```
+
+1. `"氏名: ○点"` の形式で全員のスコアを表示せよ
+2. 80点以上の生徒の名前と点数を表示せよ
+3. クラスの平均点を計算せよ
+4. 最高点の生徒名と点数を表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+辞書のfor文は `.items()` を使うと便利:
+```python
+for name, score in class_scores.items():
+    # name にキー、score に値が入る
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2（最高点の見つけ方）</summary>
+
+最高点を持つ生徒を探すには、ループ内で比較しながら更新する:
+```python
+best_name = ""
+best_score = 0
+for name, score in class_scores.items():
+    if score > best_score:
+        best_score = score
+        best_name = name
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+class_scores = {
+    "田中": 78,
+    "鈴木": 92,
+    "佐藤": 65,
+    "山田": 88,
+    "伊藤": 71
+}
+
+# 1. 全員のスコアを表示
+for name, score in class_scores.items():
+    print(f"{name}: {score}点")
+
+# 2. 80点以上を表示
+print("--- 80点以上 ---")
+for name, score in class_scores.items():
+    if score >= 80:
+        print(f"{name}: {score}点")
+
+# 3. 平均点を計算
+total = 0
+for score in class_scores.values():
+    total += score
+average = total / len(class_scores)
+print(f"平均点: {average:.1f}点")  # 78.8点
+
+# 4. 最高点の生徒
+best_name = ""
+best_score = 0
+for name, score in class_scores.items():
+    if score > best_score:
+        best_score = score
+        best_name = name
+print(f"最高点: {best_name} ({best_score}点)")  # 鈴木 (92点)
+```
+
+</AnswerToggle>
+
+---
+
+### 問題 5-3: while文の基本
+
+**問題:**
+`while` 文を使って以下を実装してください。
+
+1. 1から10までの数字を表示せよ
+2. 1から100までの数字の合計を計算せよ（答えは5050）
+3. ある数を2で割り続けて1以下になるまでの回数を数えよ（初期値: 100）
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+while文の基本形:
+```python
+i = 1
+while i <= 10:
+    print(i)
+    i += 1  # ← これを忘れると無限ループになる！
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+合計の計算はループ内で足し続ける:
+```python
+total = 0
+i = 1
+while i <= 100:
+    total += i
+    i += 1
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（問題3）</summary>
+
+条件: `数 > 1` の間ループを続ける。ループごとに `count += 1` で回数を記録する。
+
+</details>
+
+<AnswerToggle>
+
+```python
+# 1. 1から10まで表示
+i = 1
+while i <= 10:
+    print(i)
+    i += 1
+
+# 2. 1から100の合計
+total = 0
+i = 1
+while i <= 100:
+    total += i
+    i += 1
+print(f"合計: {total}")  # 合計: 5050
+
+# 3. 2で割り続ける回数
+num = 100
+count = 0
+while num > 1:
+    num /= 2
+    count += 1
+print(f"{count}回で1以下になった")  # 7回
+```
+
+</AnswerToggle>
+
+---
+
+### 問題 5-4: enumerate と zip（便利な関数）
+
+**問題:**
+`enumerate()` と `zip()` を使って以下を実装してください。
+
+```python
+subjects = ["数学", "英語", "プログラミング", "統計"]
+scores = [82, 75, 95, 88]
+```
+
+1. `enumerate()` を使って `"1. 数学"`, `"2. 英語"` ... の形式で表示せよ（番号は1始まり）
+2. `zip()` を使って `"数学: 82点"` の形式で表示せよ
+3. 最も点数の高い科目名を表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1（enumerate）</summary>
+
+`enumerate()` はインデックスと値を同時に取り出せる:
+```python
+for i, value in enumerate(リスト):
+    # i はインデックス(0始まり)、value は要素
+```
+
+1始まりにする場合: `enumerate(リスト, start=1)`
+
+</details>
+
+<details>
+<summary>💡 ヒント2（zip）</summary>
+
+`zip()` は複数のリストを同時に繰り返せる:
+```python
+for a, b in zip(リスト1, リスト2):
+    # a はリスト1の要素、b はリスト2の要素（同じ位置）
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（最高点の科目）</summary>
+
+zip でペアにしながら、最高点を探す:
+```python
+best_subject = ""
+best_score = 0
+for subject, score in zip(subjects, scores):
+    if score > best_score:
+        ...
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+subjects = ["数学", "英語", "プログラミング", "統計"]
+scores = [82, 75, 95, 88]
+
+# 1. enumerate で番号付き表示
+for i, subject in enumerate(subjects, start=1):
+    print(f"{i}. {subject}")
+
+# 2. zip で科目と点数を表示
+for subject, score in zip(subjects, scores):
+    print(f"{subject}: {score}点")
+
+# 3. 最高点の科目を表示
+best_subject = ""
+best_score = 0
+for subject, score in zip(subjects, scores):
+    if score > best_score:
+        best_score = score
+        best_subject = subject
+print(f"最高点の科目: {best_subject} ({best_score}点)")  # プログラミング (95点)
+```
+
+**解説:**
+`enumerate` と `zip` はPythonらしい書き方（Pythonic）の代表例。
+`range(len(リスト))` でインデックスをループするより、これらを使う方が読みやすい。
+
+</AnswerToggle>
+
+---
+
+### 問題 5-5: 総合問題（リスト＋辞書＋ループ）
+
+**問題:**
+以下の学生データを使って、いくつかの処理を実装してください。
+
+```python
+students = [
+    {"name": "田中", "scores": [80, 75, 90, 85]},
+    {"name": "鈴木", "scores": [95, 88, 92, 97]},
+    {"name": "佐藤", "scores": [65, 70, 60, 75]},
+    {"name": "山田", "scores": [88, 82, 91, 79]},
+]
+```
+
+1. 各生徒の名前と4科目の平均点を表示せよ
+2. 平均点が80点以上の生徒名を表示せよ
+3. クラス全体の平均点（全員の全科目の平均）を計算せよ
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+外側のループで各生徒（辞書）を取り出し、内側で scores を処理する:
+```python
+for student in students:
+    name = student["name"]
+    scores = student["scores"]
+    # scores はリスト
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2（平均点の計算）</summary>
+
+scores はリストなので `sum()` と `len()` が使える:
+```python
+average = sum(scores) / len(scores)
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（クラス全体の平均）</summary>
+
+全員分のスコアを一つのリストにまとめてから計算する方法が簡単:
+```python
+all_scores = []
+for student in students:
+    all_scores += student["scores"]  # リストを結合
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+students = [
+    {"name": "田中", "scores": [80, 75, 90, 85]},
+    {"name": "鈴木", "scores": [95, 88, 92, 97]},
+    {"name": "佐藤", "scores": [65, 70, 60, 75]},
+    {"name": "山田", "scores": [88, 82, 91, 79]},
+]
+
+# 1. 各生徒の平均点を表示
+for student in students:
+    name = student["name"]
+    scores = student["scores"]
+    avg = sum(scores) / len(scores)
+    print(f"{name}: 平均 {avg:.1f}点")
+
+# 出力:
+# 田中: 平均 82.5点
+# 鈴木: 平均 93.0点
+# 佐藤: 平均 67.5点
+# 山田: 平均 85.0点
+
+# 2. 平均80点以上の生徒を表示
+print("--- 80点以上 ---")
+for student in students:
+    avg = sum(student["scores"]) / len(student["scores"])
+    if avg >= 80:
+        print(student["name"])
+
+# 3. クラス全体の平均点
+all_scores = []
+for student in students:
+    all_scores += student["scores"]
+
+class_avg = sum(all_scores) / len(all_scores)
+print(f"クラス全体の平均: {class_avg:.1f}点")  # 82.0点
+```
+
+**解説:**
+「リストの中に辞書がある」という入れ子構造は、実際のデータ処理で非常によく出てくるパターン。
+外側でリストをループ → 内側で辞書からキーで取得、という流れを習得しよう。
+
+</AnswerToggle>
+
+---
+
+### 問題 5-6: 最終チャレンジ（集合＋辞書＋ループ）
+
+**問題:**
+サークルの履修データを分析してください。
+
+```python
+circle_members = {
+    "AIサークル": {"田中", "鈴木", "佐藤", "山田"},
+    "プログラミングサークル": {"鈴木", "伊藤", "田中", "渡辺"},
+    "データサイエンスサークル": {"佐藤", "山田", "鈴木", "小林"},
+}
+```
+
+1. 全サークルの名前と人数を表示せよ
+2. 複数のサークルに所属している人を全員見つけよ（ヒント: 全員のリストを作って重複を探す）
+3. すべてのサークルに所属している人を見つけよ（積集合）
+4. いずれかのサークルに所属している全メンバーのリストを作れ（和集合）
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+辞書のfor文で `items()` を使う:
+```python
+for circle_name, members in circle_members.items():
+    print(circle_name, len(members))
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2（複数所属の人を探す）</summary>
+
+全員を一度リストに入れて、2回以上出てくる人を探す:
+```python
+all_members = []
+for members in circle_members.values():
+    all_members += list(members)
+# あとは all_members の中で重複している名前を探す
+```
+
+リストの `.count(値)` で出現回数を調べられる。
+
+</details>
+
+<details>
+<summary>💡 ヒント3（全サークル所属）</summary>
+
+集合のfor文で積集合を積み上げる:
+```python
+all_sets = list(circle_members.values())
+result = all_sets[0]  # 最初の集合
+for s in all_sets[1:]:
+    result = result & s  # 積集合を繰り返す
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+circle_members = {
+    "AIサークル": {"田中", "鈴木", "佐藤", "山田"},
+    "プログラミングサークル": {"鈴木", "伊藤", "田中", "渡辺"},
+    "データサイエンスサークル": {"佐藤", "山田", "鈴木", "小林"},
+}
+
+# 1. 各サークルの名前と人数
+for name, members in circle_members.items():
+    print(f"{name}: {len(members)}人")
+
+# 2. 複数サークルに所属している人
+all_members = []
+for members in circle_members.values():
+    all_members += list(members)
+
+multi_members = set()
+for member in set(all_members):  # ユニークな名前でループ
+    if all_members.count(member) >= 2:
+        multi_members.add(member)
+print("複数所属:", multi_members)  # {'田中', '鈴木', '佐藤', '山田'}
+
+# 3. すべてのサークルに所属している人（積集合）
+all_sets = list(circle_members.values())
+common = all_sets[0]
+for s in all_sets[1:]:
+    common = common & s
+print("全サークル所属:", common)  # {'鈴木'}
+
+# 4. いずれかのサークルに所属する全メンバー（和集合）
+all_unique = set()
+for members in circle_members.values():
+    all_unique = all_unique | members
+print("全メンバー:", sorted(all_unique))
+# ['伊藤', '小林', '山田', '佐藤', '渡辺', '田中', '鈴木']
+```
+
+</AnswerToggle>
+
+---
+
+# 🎯 まとめ：各データ構造の使い分け
+
+| 型 | 記法 | 変更 | 重複 | 順番 | 使いどころ |
+|----|------|------|------|------|-----------|
+| リスト | `[1, 2, 3]` | ✅ | ✅ | ✅ | 順番が重要なデータ、追加・削除が必要 |
+| タプル | `(1, 2, 3)` | ❌ | ✅ | ✅ | 変更させたくないデータ、座標・設定値 |
+| 辞書 | `{"key": val}` | ✅ | ✅(値のみ) | ✅(3.7+) | キーで検索するデータ |
+| 集合 | `{1, 2, 3}` | ✅ | ❌ | ❌ | 重複排除・集合演算 |
+
+---
+
+*最終更新: 2026年4月*

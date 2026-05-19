@@ -1,0 +1,751 @@
+---
+title: "Python関数の基礎 演習問題集"
+description: "def、引数、戻り値、処理の分割を手を動かして学ぶPython関数の入門演習問題集。"
+category: "プログラミング言語"
+categorySlug: "languages"
+tags: ["Python","関数","def","戻り値","演習問題"]
+level: "beginner"
+updated: "2026-05-19"
+draft: false
+---
+
+import AnswerToggle from "../../../components/AnswerToggle.astro";
+
+<p class="lead">Pythonの関数を、定義、引数、戻り値、処理の分割という順番で練習するための演習問題集です。コードを横に置いて実行しながら、関数を「あとで使い回せる処理のまとまり」として扱う感覚を育てます。</p>
+
+<div class="note">
+  <strong>使い方:</strong> まず問題を読んでPythonファイルに自分の答えを書き、実行してからヒントや解答を開いて確認してください。解答はページを開いた直後は隠れています。表示状態は保存しないため、ページを開き直すとすべて閉じた状態に戻ります。
+</div>
+
+> **対象:** 関数の定義（`def`）、引数、戻り値（`return`）
+> **目標:** この問題集に取り組むだけで、関数の基本的な書き方と使い方を自力で扱えるようになる
+
+---
+
+## 学習の進め方
+
+1. 問題文を読む
+2. まず自力で考えてみる（5〜10分）
+3. 詰まったらヒントを順番に読む（一気に全部読まないこと！）
+4. 自力で答えを書いてみる
+5. 最後に「解答」を確認する
+
+---
+
+## 第1章: 関数の基本形
+
+> **ポイント:** 関数は `def` で定義し、呼び出すことで何度も使える
+
+---
+
+### 問題 1-1: 最も簡単な関数
+
+**問題:**
+以下のように動作する関数 `greet()` を定義してください。呼び出すと「Hello, World!」と表示されます。
+
+```python
+greet()
+# 出力: Hello, World!
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+関数は `def` というキーワードで定義します。その後に関数名と括弧 `()` を付けます。関数の中に実行する処理を書きます。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+基本的な形は以下の通りです：
+```python
+def 関数名():
+    # ここに処理を書く
+```
+
+`greet()` の場合、中身は `print("Hello, World!")` です。
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+def greet():
+    print("Hello, World!")
+```
+
+この形で定義して、その後に `greet()` と書くと関数が実行されます。
+
+</details>
+
+<AnswerToggle>
+
+```python
+def greet():
+    print("Hello, World!")
+
+greet()
+```
+
+**出力:**
+```
+Hello, World!
+```
+
+**解説:**
+`def greet():` で関数を定義し、その中に `print()` を書きます。関数を実行するには、定義の後に `greet()` と書きます。括弧 `()` がないと関数は実行されません。
+
+</AnswerToggle>
+
+---
+
+### 問題 1-2: 引数を持つ関数
+
+**問題:**
+関数 `greet_person()` を定義してください。名前を引数として受け取り、「Hello, {"{名前}"}!」と表示します。
+
+```python
+greet_person("Alice")
+# 出力: Hello, Alice!
+
+greet_person("Bob")
+# 出力: Hello, Bob!
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+関数は引数を受け取ることができます。括弧 `()` の中に引数の名前を書くと、その値を関数の中で使えます。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+定義のときは括弧に引数の名前を書きます：
+```python
+def greet_person(name):
+    # name という変数を使える
+```
+
+呼び出すときは実際の値を渡します：
+```python
+greet_person("Alice")
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+def greet_person(name):
+    print(f"Hello, {name}!")
+```
+
+`f"Hello, {name}!"` は f文字列で、中に変数を埋め込めます。
+
+</details>
+
+<AnswerToggle>
+
+```python
+def greet_person(name):
+    print(f"Hello, {name}!")
+
+greet_person("Alice")
+greet_person("Bob")
+```
+
+**出力:**
+```
+Hello, Alice!
+Hello, Bob!
+```
+
+**解説:**
+関数の定義で括弧の中に `name` と書くことで、その関数は「`name` という引数を受け取る」という意味になります。呼び出すときに `greet_person("Alice")` と書くと、`name` に `"Alice"` が入ります。f文字列 `f"Hello, {name}!"` を使うと、変数の値を文字列に埋め込めます。
+
+</AnswerToggle>
+
+---
+
+## 第2章: 戻り値の基本
+
+> **ポイント:** 関数の結果を戻す（`return`）ことで、その値を他の処理に使える
+
+---
+
+### 問題 2-1: 戻り値を返す関数
+
+**問題:**
+関数 `add()` を定義してください。2つの数を引数として受け取り、その合計を戻り値として返します。
+
+```python
+result = add(3, 5)
+print(result)
+# 出力: 8
+
+sum_value = add(10, 20)
+print(sum_value)
+# 出力: 30
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+関数から値を返すには `return` キーワードを使います。`return` の後に書いた値がその関数の結果になります。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+基本的な形：
+```python
+def add(a, b):
+    return a + b
+```
+
+`return` で返された値は、関数を呼び出したところで受け取れます：
+```python
+result = add(3, 5)  # result に 8 が入る
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+def add(a, b):
+    total = a + b
+    return total
+
+result = add(3, 5)
+print(result)  # 8
+```
+
+このように、計算結果を返すことで、関数の外でその値を使えます。
+
+</details>
+
+<AnswerToggle>
+
+```python
+def add(a, b):
+    return a + b
+
+result = add(3, 5)
+print(result)
+
+sum_value = add(10, 20)
+print(sum_value)
+```
+
+**出力:**
+```
+8
+30
+```
+
+**解説:**
+`return` で関数から値を返します。関数を呼び出したときの結果は、呼び出し元の変数に代入できます。`add(3, 5)` は `8` を返すので、`result = add(3, 5)` とすると `result` に `8` が入ります。
+
+</AnswerToggle>
+
+---
+
+### 問題 2-2: 条件分岐を含む関数
+
+**問題:**
+関数 `is_even()` を定義してください。整数を引数として受け取り、その数が偶数なら `True`、奇数なら `False` を返します。
+
+```python
+print(is_even(4))
+# 出力: True
+
+print(is_even(7))
+# 出力: False
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+関数の中で `if` 文を使って条件判定ができます。条件によって異なる `return` を実行することで、戻り値を変えられます。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+偶数かどうかを判定するには、2で割った余りを使います。余りが0なら偶数です：
+```python
+def is_even(num):
+    if num % 2 == 0:
+        return True
+    else:
+        return False
+```
+
+`%` は剰余（あまり）を計算する演算子です。
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+上の例でも正解ですが、もっとシンプルに書くこともできます：
+```python
+def is_even(num):
+    return num % 2 == 0
+```
+
+`num % 2 == 0` 自体が `True` または `False` を返すので、その値をそのまま `return` できます。
+
+</details>
+
+<AnswerToggle>
+
+```python
+def is_even(num):
+    if num % 2 == 0:
+        return True
+    else:
+        return False
+
+print(is_even(4))
+print(is_even(7))
+```
+
+**または（シンプル版）:**
+```python
+def is_even(num):
+    return num % 2 == 0
+
+print(is_even(4))
+print(is_even(7))
+```
+
+**出力:**
+```
+True
+False
+```
+
+**解説:**
+`num % 2` は `num` を2で割った余りです。余りが0なら偶数、1なら奇数です。`if` 文で判定して `True` または `False` を返します。シンプル版では、`num % 2 == 0` という判定式自体が `True` または `False` の値を持つので、その値をそのまま `return` できます。
+
+</AnswerToggle>
+
+---
+
+## 第3章: 複数の処理を関数にまとめる
+
+> **ポイント:** 複数の処理を1つの関数にすることで、コードを整理できる
+
+---
+
+### 問題 3-1: 複数の処理を持つ関数
+
+**問題:**
+関数 `calculate_rectangle_area()` を定義してください。縦の長さと横の長さを引数として受け取り、長方形の面積を計算して返します。
+
+```python
+area = calculate_rectangle_area(5, 10)
+print(area)
+# 出力: 50
+
+area2 = calculate_rectangle_area(3, 7)
+print(area2)
+# 出力: 21
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+関数は複数の引数を受け取ることができます。括弧の中にコンマで区切って複数の引数名を書きます。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+関数の定義：
+```python
+def calculate_rectangle_area(width, height):
+    # width と height を使って計算
+```
+
+長方形の面積は「縦 × 横」です。
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+def calculate_rectangle_area(width, height):
+    area = width * height
+    return area
+```
+
+または直接 `return width * height` と書いても大丈夫です。
+
+</details>
+
+<AnswerToggle>
+
+```python
+def calculate_rectangle_area(width, height):
+    area = width * height
+    return area
+
+area = calculate_rectangle_area(5, 10)
+print(area)
+
+area2 = calculate_rectangle_area(3, 7)
+print(area2)
+```
+
+**または:**
+```python
+def calculate_rectangle_area(width, height):
+    return width * height
+
+area = calculate_rectangle_area(5, 10)
+print(area)
+
+area2 = calculate_rectangle_area(3, 7)
+print(area2)
+```
+
+**出力:**
+```
+50
+21
+```
+
+**解説:**
+複数の引数は括弧の中にコンマで区切って書きます。`calculate_rectangle_area(5, 10)` で呼び出すと、`width` に `5`、`height` に `10` が入ります。関数の中で計算して `return` すれば、その結果を変数に代入できます。
+
+</AnswerToggle>
+
+---
+
+# まとめ：関数の基本形
+
+| 概念 | 形式 | 説明 |
+|------|------|------|
+| 関数の定義（引数なし） | `def 関数名(): ...` | 最も単純な形。括弧は空 |
+| 関数の定義（引数あり） | `def 関数名(a, b): ...` | 複数の引数はコンマで区切る |
+| 戻り値 | `return 値` | 関数から値を返す |
+| 関数の呼び出し | `関数名()` | 定義した関数を実行する |
+| 戻り値を受け取る | `変数 = 関数名()` | 返された値を変数に代入 |
+| 条件分岐 | `if 条件: return 値1 else: return 値2` | 条件で異なる値を返す |
+
+---
+
+## 関数を使うメリット
+
+1. **コードの再利用性**: 同じ処理を何度も書かずに、関数を呼び出すだけで使える
+2. **可読性**: 複雑な処理を関数にまとめると、コード全体が分かりやすくなる
+3. **保守性**: 処理を変えるときに、関数の定義の部分だけを変えれば済む
+4. **整理整頓**: 処理を分割することで、プログラムの構造が明確になる
+
+---
+
+## 次のステップ
+
+このテーマが理解できたら、以下を学ぶことをお勧めします：
+
+- **デフォルト引数**: 関数を呼び出すときに値を渡さなくても使える引数
+- **可変長引数**: 引数の数が決まっていない関数
+- **複数戻り値**: 関数から複数の値を返す方法
+
+---
+
+## 第4章: 発展（lambda・高階関数）
+
+> **ポイント:** Pythonでは関数を「値」として扱える。
+> `lambda` で無名関数を作り、`map()` や `filter()` などの高階関数に渡すことで、
+> 処理をシンプルに書けるようになる。
+
+---
+
+### 問題 4-1: lambda（無名関数）
+
+**問題:**
+`lambda` を使って以下の関数を1行で書いてください。
+
+1. 引数 `x` を受け取って2倍を返す関数 `double` を作れ
+2. 引数 `x`, `y` を受け取って大きい方を返す関数 `bigger` を作れ
+3. 以下のリストを「名前の文字数」で昇順にソートせよ
+
+```python
+names = ["田中太郎", "鈴木花子", "佐藤", "山田一郎太"]
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（lambdaとは）</summary>
+
+`lambda` は名前をつけずに関数を作れる構文。「無名関数」とも呼ぶ。
+
+通常の `def` との比較:
+```python
+# def を使う場合
+def double(x):
+    return x * 2
+
+# lambda を使う場合
+double = lambda x: x * 2
+```
+
+書き方: `lambda 引数: 戻り値の式`
+
+</details>
+
+<details>
+<summary>💡 ヒント2（ソートのkeyに使う）</summary>
+
+`sorted()` の `key` 引数に `lambda` を渡すと、任意の基準でソートできる:
+```python
+sorted(リスト, key=lambda x: ソートの基準)
+```
+
+文字列の長さは `len(文字列)` で取れる。
+
+</details>
+
+<details>
+<summary>💡 ヒント3（bigger）</summary>
+
+`lambda` の戻り値部分には条件式（三項演算子）も書ける:
+```python
+lambda x, y: x if x > y else y
+```
+
+「`x` が `y` より大きければ `x`、そうでなければ `y`」という意味。
+
+</details>
+
+<AnswerToggle>
+
+```python
+# 1. 2倍を返す
+double = lambda x: x * 2
+print(double(5))   # 10
+print(double(3))   # 6
+
+# 2. 大きい方を返す
+bigger = lambda x, y: x if x > y else y
+print(bigger(3, 7))  # 7
+print(bigger(9, 2))  # 9
+
+# 3. 文字数でソート
+names = ["田中太郎", "鈴木花子", "佐藤", "山田一郎太"]
+sorted_names = sorted(names, key=lambda name: len(name))
+print(sorted_names)  # ['佐藤', '田中太郎', '鈴木花子', '山田一郎太']
+```
+
+**解説:**
+`lambda` が最も活躍するのは `sorted()` や `map()` / `filter()` に渡すとき。
+「この場でしか使わない小さな関数」を1行で書けるので、わざわざ `def` で名前をつけるより簡潔になる。
+
+ただし複雑な処理には向かない。処理が2行以上になるなら `def` を使う方が読みやすい。
+
+</AnswerToggle>
+
+---
+
+### 問題 4-2: map()
+
+**問題:**
+`map()` を使って以下を実装してください。
+
+```python
+prices = [100, 250, 480, 1200, 85]
+```
+
+1. すべての価格を1.1倍（消費税10%）にしたリストを作れ
+2. すべての価格を文字列 `"○○円"` の形式に変換したリストを作れ
+3. `def` で定義した関数を `map()` に渡して同じことをやってみよ
+
+---
+
+<details>
+<summary>💡 ヒント1（mapとは）</summary>
+
+`map(関数, リスト)` はリストの各要素に関数を適用して、新しいリストを作る。
+
+```python
+map(lambda x: x * 2, [1, 2, 3])
+# → [2, 4, 6] に相当
+```
+
+ただし `map()` の結果はそのままでは表示できないので `list()` に渡す必要がある:
+```python
+result = list(map(lambda x: x * 2, [1, 2, 3]))
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+- 1.1倍: `lambda x: x * 1.1`
+- 文字列変換: `lambda x: f"{x}円"`
+
+</details>
+
+<details>
+<summary>💡 ヒント3（defとmapの組み合わせ）</summary>
+
+`map()` には `lambda` だけでなく `def` で定義した関数も渡せる:
+```python
+def add_tax(price):
+    return price * 1.1
+
+result = list(map(add_tax, prices))
+```
+
+関数名だけを渡す（`()` はつけない）。
+
+</details>
+
+<AnswerToggle>
+
+```python
+prices = [100, 250, 480, 1200, 85]
+
+# 1. 消費税10%を加算
+taxed = list(map(lambda x: x * 1.1, prices))
+print(taxed)  # [110.0, 275.0, 528.0, 1320.0, 93.5]
+
+# 2. "○○円" 形式に変換
+labeled = list(map(lambda x: f"{x}円", prices))
+print(labeled)  # ['100円', '250円', '480円', '1200円', '85円']
+
+# 3. def で定義した関数を使う
+def add_tax(price):
+    return int(price * 1.1)  # int()で整数に丸める
+
+result = list(map(add_tax, prices))
+print(result)  # [110, 275, 528, 1320, 93]
+```
+
+**解説:**
+`map()` は「全要素に同じ処理をする」ときに使う。
+`for` ループで書くこともできるが、`map()` を使うと意図が明確になる。
+
+```python
+# for ループ版（同じ結果）
+taxed = []
+for p in prices:
+    taxed.append(p * 1.1)
+```
+
+どちらが良いかはケースバイケース。チームのコードスタイルに合わせること。
+
+</AnswerToggle>
+
+---
+
+### 問題 4-3: filter()
+
+**問題:**
+`filter()` を使って以下を実装してください。
+
+```python
+scores = [45, 82, 91, 37, 68, 55, 76, 99, 41, 88]
+```
+
+1. 70点以上のスコアだけを取り出せ
+2. 奇数のスコアだけを取り出せ
+3. `map()` と `filter()` を組み合わせて、「80点以上のスコアを1.2倍にしたリスト」を作れ
+
+---
+
+<details>
+<summary>💡 ヒント1（filterとは）</summary>
+
+`filter(関数, リスト)` はリストの要素のうち、関数が `True` を返すものだけを残す。
+
+```python
+filter(lambda x: x > 70, [45, 82, 91, 37])
+# → [82, 91] に相当
+```
+
+`map()` と同様、`list()` に渡して結果を取り出す。
+
+</details>
+
+<details>
+<summary>💡 ヒント2</summary>
+
+- 70点以上: `lambda x: x >= 70`
+- 奇数: `lambda x: x % 2 != 0`
+
+</details>
+
+<details>
+<summary>💡 ヒント3（組み合わせ）</summary>
+
+`filter()` の結果をそのまま `map()` に渡せる:
+```python
+list(map(処理関数, filter(条件関数, リスト)))
+```
+
+「まず絞り込んで、それから変換する」という流れ。
+
+</details>
+
+<AnswerToggle>
+
+```python
+scores = [45, 82, 91, 37, 68, 55, 76, 99, 41, 88]
+
+# 1. 70点以上だけ取り出す
+high = list(filter(lambda x: x >= 70, scores))
+print(high)  # [82, 91, 76, 99, 88]
+
+# 2. 奇数だけ取り出す
+odds = list(filter(lambda x: x % 2 != 0, scores))
+print(odds)  # [45, 91, 37, 55, 41, 99]
+
+# 3. 80点以上を1.2倍にする（filter → map）
+boosted = list(map(
+    lambda x: int(x * 1.2),
+    filter(lambda x: x >= 80, scores)
+))
+print(boosted)  # [98, 109, 118, 105]  ※82→98, 91→109, 99→118, 88→105
+```
+
+**解説:**
+`filter()` と `map()` を組み合わせる流れは関数型プログラミングの基本パターン。
+「絞り込む（filter）→ 変換する（map）」の順番で書くと意図が読みやすい。
+
+現代のPythonではリスト内包表記を使うことも多い（同じ結果）:
+```python
+boosted = [int(x * 1.2) for x in scores if x >= 80]
+```
+
+どちらの書き方も知っておくと、他の人のコードを読むときに役立つ。
+
+</AnswerToggle>
+
+---

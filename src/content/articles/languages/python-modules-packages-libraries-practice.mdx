@@ -1,0 +1,1010 @@
+---
+title: "Pythonモジュール・パッケージ・ライブラリ 演習問題集"
+description: "import文、標準ライブラリ、自作モジュール、外部ライブラリの使い方を練習できるPython演習問題集。"
+category: "プログラミング言語"
+categorySlug: "languages"
+tags: ["Python","import","標準ライブラリ","パッケージ","演習問題"]
+level: "beginner"
+updated: "2026-05-19"
+draft: false
+---
+
+import AnswerToggle from "../../../components/AnswerToggle.astro";
+
+<p class="lead">Pythonのimport文、標準ライブラリ、自作モジュール、外部ライブラリの扱いを、短い問題で順番に練習する記事です。モジュールを読み込む感覚、名前空間、ファイル分割の考え方を、手を動かしながら確認できます。</p>
+
+<div class="note">
+  <strong>使い方:</strong> まず問題を読んでPythonファイルに自分の答えを書き、実行してからヒントや解答を開いて確認してください。解答はページを開いた直後は隠れています。表示状態は保存しないため、ページを開き直すとすべて閉じた状態に戻ります。
+</div>
+
+> **対象:** import文・標準ライブラリ・自作モジュール・発展（自作パッケージ・サードパーティライブラリ）
+> **目標:** この問題集に取り組むだけで、Pythonのモジュールを自在にインポートして使えるようになる
+
+---
+
+## 学習の進め方
+
+1. 問題文を読む
+2. まず自力で考えてみる（5〜10分）
+3. 詰まったらヒントを順番に読む（一気に全部読まないこと！）
+4. 自力で答えを書いてみる
+5. 最後に「解答」を確認する
+
+---
+
+## 第1章: import文の基本
+
+> **ポイント:** モジュールとは「機能をまとめたファイル」。`import` で読み込んで使う。
+
+---
+
+### 問題 1-1: 基本的なimport
+
+**問題:**
+`math` モジュールをインポートして、以下の計算を行ってください。
+
+1. 円周率（π）を表示せよ
+2. √2（2の平方根）を計算して表示せよ
+3. `16` の平方根を計算して表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+Pythonには最初から使える便利な「標準ライブラリ」がある。
+`math` はそのひとつで、数学的な計算に使う関数や定数が入っている。
+
+使う前に `import モジュール名` で読み込む必要がある。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+`import` したあとは `モジュール名.機能名` の形で使う:
+```python
+import math
+math.???  # mathモジュールの何かを使う
+```
+
+`math` モジュールの主な中身:
+- `math.pi` → 円周率
+- `math.sqrt(x)` → xの平方根
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+import math
+print(math.pi)       # 円周率
+print(math.sqrt(2))  # √2
+print(math.sqrt(16)) # √16
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+import math
+
+# 1. 円周率
+print(math.pi)        # 3.141592653589793
+
+# 2. √2
+print(math.sqrt(2))   # 1.4142135623730951
+
+# 3. √16
+print(math.sqrt(16))  # 4.0
+```
+
+**解説:**
+`import math` でモジュールを読み込むと、`math.pi` や `math.sqrt()` のように
+`モジュール名.機能名` の形で中の機能を使える。
+`math.sqrt(16)` の結果が `4` ではなく `4.0`（小数）なのは、`sqrt()` が常に浮動小数点数を返すため。
+
+</AnswerToggle>
+
+---
+
+### 問題 1-2: from...import構文
+
+**問題:**
+`math` モジュールから `pi` と `sqrt` だけをインポートして、問題1-1と同じ計算を行ってください。
+ただし今回は `math.` をつけずに使えるようにしてください。
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+`import math` だと、使うたびに `math.pi` `math.sqrt()` と書かないといけない。
+`from ... import ...` 構文を使うと、モジュール名を省略して直接使える。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+書き方:
+```python
+from モジュール名 import 機能名1, 機能名2
+```
+
+例:
+```python
+from math import pi, sqrt
+print(pi)      # math. なしで使える
+print(sqrt(2)) # math. なしで使える
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+複数の機能をインポートするにはカンマで区切る:
+```python
+from math import pi, sqrt
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+from math import pi, sqrt
+
+# 1. 円周率
+print(pi)       # 3.141592653589793
+
+# 2. √2
+print(sqrt(2))  # 1.4142135623730951
+
+# 3. √16
+print(sqrt(16)) # 4.0
+```
+
+**解説:**
+`from math import pi, sqrt` は「mathモジュールから pi と sqrt だけ取り出す」という意味。
+`math.pi` → `pi`、`math.sqrt()` → `sqrt()` と短く書けるようになる。
+
+ただし `from math import *`（全部インポート）は、どの名前がどこから来たか分かりにくくなるので
+実務では避けるのが一般的。
+
+</AnswerToggle>
+
+---
+
+### 問題 1-3: as（エイリアス）
+
+**問題:**
+`numpy` のような長い名前のライブラリは慣習的に短い名前をつけて使います。
+`import ... as ...` 構文を使って以下を実現してください。
+
+1. `math` モジュールを `m` という名前でインポートせよ
+2. `m.pi` と `m.sqrt(9)` を表示せよ
+3. `datetime` モジュールを `dt` という名前でインポートし、現在の日付を表示せよ
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+`as` を使うとモジュールに別名（エイリアス）をつけられる。
+長いモジュール名を短く書きたいときや、名前の衝突を避けたいときに使う。
+
+代表例: `import numpy as np`、`import pandas as pd`（データ分析の世界では定番）
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+書き方:
+```python
+import モジュール名 as 別名
+```
+
+以降は `別名.機能名` の形で使う:
+```python
+import math as m
+m.pi       # math.pi と同じ
+m.sqrt(9)  # math.sqrt(9) と同じ
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（datetimeについて）</summary>
+
+`datetime` モジュールで現在の日付・時刻を取得するには:
+```python
+import datetime as dt
+dt.datetime.now()  # 現在の日時
+dt.date.today()    # 今日の日付だけ
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+# 1, 2. math を m としてインポート
+import math as m
+
+print(m.pi)       # 3.141592653589793
+print(m.sqrt(9))  # 3.0
+
+# 3. datetime を dt としてインポートして今日の日付を表示
+import datetime as dt
+
+today = dt.date.today()
+print(today)  # 例: 2026-04-03
+```
+
+**解説:**
+エイリアスは慣習が重要。`import numpy as np` や `import pandas as pd` は
+世界中のPythonエンジニアが使う共通の書き方なので、これに合わせておくと
+他の人のコードも読みやすくなる。
+
+</AnswerToggle>
+
+---
+
+## 第2章: 標準ライブラリを使う
+
+> **ポイント:** Pythonには最初から使える便利なライブラリが多数ある。インストール不要でそのまま使える。
+
+---
+
+### 問題 2-1: randomモジュール
+
+**問題:**
+`random` モジュールを使って以下を実装してください。
+
+1. 1〜6のランダムな整数を生成せよ（サイコロ）
+2. `["グー", "チョキ", "パー"]` からランダムに1つ選べ
+3. `[1, 2, 3, 4, 5]` をランダムに並び替えよ
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+`random` モジュールにはランダムな値を生成する関数が入っている。
+`import random` でインポートして使う。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+`random` モジュールの主な関数:
+- `random.randint(a, b)` → a以上b以下の整数をランダムに返す
+- `random.choice(リスト)` → リストからランダムに1つ選ぶ
+- `random.shuffle(リスト)` → リストをランダムに並び替える（元のリストを変更）
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+import random
+
+# サイコロ
+random.randint(1, 6)
+
+# リストから1つ選ぶ
+random.choice(["グー", "チョキ", "パー"])
+
+# リストを並び替える（返り値はNone、元のリストが変わる）
+numbers = [1, 2, 3, 4, 5]
+random.shuffle(numbers)
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+import random
+
+# 1. サイコロ（1〜6のランダムな整数）
+dice = random.randint(1, 6)
+print(f"サイコロ: {dice}")  # 例: サイコロ: 4
+
+# 2. じゃんけんの手をランダムに選ぶ
+hands = ["グー", "チョキ", "パー"]
+hand = random.choice(hands)
+print(f"選んだ手: {hand}")  # 例: 選んだ手: チョキ
+
+# 3. リストをランダムに並び替える
+numbers = [1, 2, 3, 4, 5]
+random.shuffle(numbers)
+print(numbers)  # 例: [3, 1, 5, 2, 4]
+```
+
+**解説:**
+`shuffle()` は元のリストを直接変更する（破壊的操作）。並び替えた新しいリストが欲しい場合は
+`random.sample(リスト, len(リスト))` を使うと元を保持できる。
+
+</AnswerToggle>
+
+---
+
+### 問題 2-2: osモジュール
+
+**問題:**
+`os` モジュールを使って以下を実装してください。
+
+1. 現在の作業ディレクトリ（フォルダのパス）を表示せよ
+2. 環境変数 `PATH` の値を取得して表示せよ（存在しない場合は `"未設定"` と表示）
+3. `os.path` を使って、`"Python勉強/データ構造_演習問題集.md"` というパスのファイル名部分（`"データ構造_演習問題集.md"`）だけを取り出せ
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+`os` モジュールはOSの機能（ファイルシステム、環境変数、パス操作など）を扱うモジュール。
+`import os` でインポートする。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+主な機能:
+- `os.getcwd()` → 現在の作業ディレクトリを文字列で返す
+- `os.environ.get("変数名", デフォルト値)` → 環境変数を取得（存在しない場合はデフォルト値）
+- `os.path.basename(パス)` → パスからファイル名部分だけ取り出す
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+```python
+import os
+
+os.getcwd()                          # 現在のディレクトリ
+os.environ.get("PATH", "未設定")     # 環境変数
+os.path.basename("フォルダ/ファイル名.md")  # ファイル名部分
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+import os
+
+# 1. 現在の作業ディレクトリ
+cwd = os.getcwd()
+print(cwd)  # 例: /Users/taiki/Documents
+
+# 2. 環境変数 PATH を取得
+path = os.environ.get("PATH", "未設定")
+print(path)  # 例: /usr/local/bin:/usr/bin:...
+
+# 3. パスからファイル名部分を取り出す
+full_path = "Python勉強/データ構造_演習問題集.md"
+filename = os.path.basename(full_path)
+print(filename)  # データ構造_演習問題集.md
+```
+
+**解説:**
+`os.environ` は辞書のように使えるが、存在しないキーにアクセスするとエラーになる。
+`os.environ.get("KEY", デフォルト値)` を使うと安全に取得できる（辞書の `.get()` と同じ考え方）。
+
+`os.path` はパス文字列を操作するサブモジュール。
+`os.path.dirname()` でディレクトリ部分、`os.path.join()` でパスを結合、
+`os.path.exists()` でファイルの存在確認など、ファイル操作全般で頻出。
+
+</AnswerToggle>
+
+---
+
+### 問題 2-3: datetimeモジュール
+
+**問題:**
+`datetime` モジュールを使って以下を実装してください。
+
+1. 今日の日付を `"2026年04月03日"` の形式で表示せよ
+2. 今から30日後の日付を計算して表示せよ
+3. `"2025-04-01"` という文字列を日付オブジェクトに変換して、今日との差（何日前か）を計算せよ
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+`datetime` モジュールには日付・時刻を扱うクラスがある。
+よく使うのは:
+- `datetime.date` → 日付（年・月・日）
+- `datetime.datetime` → 日付＋時刻
+- `datetime.timedelta` → 日数・時間の差
+
+</details>
+
+<details>
+<summary>💡 ヒント2（まだ詰まってる場合）</summary>
+
+```python
+from datetime import date, timedelta
+
+today = date.today()           # 今日の日付オブジェクト
+today.strftime("書式")         # 日付を文字列にフォーマット
+date.fromisoformat("2025-04-01")  # 文字列から日付オブジェクトに変換
+today + timedelta(days=30)     # 30日後
+```
+
+書式の例: `"%Y年%m月%d日"` → `"2026年04月03日"`
+
+</details>
+
+<details>
+<summary>💡 ヒント3（差を計算する）</summary>
+
+日付同士を引き算すると `timedelta` オブジェクトが返る。
+`.days` プロパティで日数を取り出せる:
+```python
+diff = today - past_date
+print(diff.days)  # 何日差か
+```
+
+</details>
+
+<AnswerToggle>
+
+```python
+from datetime import date, timedelta
+
+# 1. 今日の日付を指定フォーマットで表示
+today = date.today()
+print(today.strftime("%Y年%m月%d日"))  # 2026年04月03日
+
+# 2. 30日後の日付
+future = today + timedelta(days=30)
+print(future)  # 例: 2026-05-03
+
+# 3. "2025-04-01" との差を計算
+past = date.fromisoformat("2025-04-01")
+diff = today - past
+print(f"{diff.days}日前")  # 例: 367日前
+```
+
+**解説:**
+`strftime()` は日付を好きな形式の文字列に変換するメソッド（"string format time"の略）。
+逆に文字列から日付に変換するのは `strptime()` または `fromisoformat()`。
+
+`timedelta` は「時間の差」を表すオブジェクト。
+日付の加減算に使い、`timedelta(days=7)` で1週間後、`timedelta(hours=3)` で3時間後なども計算できる。
+
+</AnswerToggle>
+
+---
+
+## 第3章: 自作モジュール
+
+> **ポイント:** Pythonのファイル（`.py`）はそのままモジュールとして使える。
+> 共通の関数を別ファイルにまとめておくと、複数のスクリプトで再利用できる。
+
+---
+
+### 問題 3-1: モジュールを作る
+
+**問題:**
+`myutils.py` というファイルを作成して、以下の関数を定義してください。
+
+1. `greet(name)` → `"こんにちは、{name}さん！"` を返す関数
+2. `is_even(n)` → `n` が偶数なら `True`、奇数なら `False` を返す関数
+3. `clamp(value, min_val, max_val)` → `value` を `min_val` 〜 `max_val` の範囲に収める関数
+   - 例: `clamp(150, 0, 100)` → `100`、`clamp(-5, 0, 100)` → `0`、`clamp(50, 0, 100)` → `50`
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+Pythonでは `.py` ファイルを作って関数を書けば、それがそのままモジュールになる。
+まず `myutils.py` というファイルを作って、中に関数を定義するだけでOK。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（clamp関数について）</summary>
+
+`clamp` は値を指定した範囲に「クリップ（切り取る）」する関数。
+ゲームや画像処理でよく使われるパターン:
+- `value < min_val` なら `min_val` を返す
+- `value > max_val` なら `max_val` を返す
+- それ以外は `value` をそのまま返す
+
+`if` 文で書いても、Pythonの `min()` / `max()` を組み合わせても実装できる。
+
+</details>
+
+<details>
+<summary>💡 ヒント3（もう一歩）</summary>
+
+`clamp` を `min()` / `max()` で1行で書く方法:
+```python
+def clamp(value, min_val, max_val):
+    return max(min_val, min(value, max_val))
+```
+
+`min(value, max_val)` で上限を切り、`max(min_val, ...)` で下限を切る。
+
+</details>
+
+<AnswerToggle>
+
+**myutils.py:**
+```python
+def greet(name):
+    return f"こんにちは、{name}さん！"
+
+def is_even(n):
+    return n % 2 == 0
+
+def clamp(value, min_val, max_val):
+    return max(min_val, min(value, max_val))
+```
+
+**動作確認（同じディレクトリで実行）:**
+```python
+import myutils
+
+print(myutils.greet("田中"))        # こんにちは、田中さん！
+print(myutils.is_even(4))           # True
+print(myutils.is_even(7))           # False
+print(myutils.clamp(150, 0, 100))   # 100
+print(myutils.clamp(-5, 0, 100))    # 0
+print(myutils.clamp(50, 0, 100))    # 50
+```
+
+**解説:**
+`n % 2 == 0` は「nを2で割った余りが0」つまり偶数の条件。
+`==` の比較式自体が `True` / `False` を返すので、`if` 文なしで直接 `return` できる。
+
+`clamp` の `max(min_val, min(value, max_val))` は慣れると読みやすい定番パターン。
+`min(value, max_val)` で「max_val を超えないようにし」、
+`max(min_val, ...)` で「min_val を下回らないようにする」。
+
+</AnswerToggle>
+
+---
+
+### 問題 3-2: `__name__` の活用
+
+**問題:**
+Pythonのモジュールには `__name__` という特別な変数がある。
+以下を理解・実装してください。
+
+1. `myutils.py` に以下を追加して、直接実行したときだけテストコードが走るようにせよ
+2. なぜこのような書き方をするのか説明せよ
+
+```python
+# myutils.py に追加するコード
+if __name__ == "__main__":
+    # ここにテストコードを書く
+    print(greet("テスト"))
+    print(is_even(10))
+    print(clamp(200, 0, 100))
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（まず読む）</summary>
+
+`__name__` はPythonが自動で設定する変数:
+- ファイルを**直接実行**したとき → `__name__` は `"__main__"` になる
+- ファイルを**インポート**したとき → `__name__` はそのモジュール名（`"myutils"`）になる
+
+</details>
+
+<details>
+<summary>💡 ヒント2（なぜ必要か）</summary>
+
+`if __name__ == "__main__":` がないと、`myutils` をインポートするたびに
+テストコードも実行されてしまう。
+
+この書き方をすることで:
+- `python myutils.py` → テスト実行される
+- `import myutils` → テストは実行されない（関数定義だけ読み込まれる）
+
+</details>
+
+<AnswerToggle>
+
+**myutils.py（完成版）:**
+```python
+def greet(name):
+    return f"こんにちは、{name}さん！"
+
+def is_even(n):
+    return n % 2 == 0
+
+def clamp(value, min_val, max_val):
+    return max(min_val, min(value, max_val))
+
+if __name__ == "__main__":
+    # このファイルを直接実行したときだけ動く
+    print(greet("テスト"))       # こんにちは、テストさん！
+    print(is_even(10))           # True
+    print(clamp(200, 0, 100))    # 100
+    print("テスト完了！")
+```
+
+**解説:**
+`if __name__ == "__main__":` はPythonのほぼすべてのスクリプトで使われる定番パターン。
+「このファイルが『主役』として直接実行されたときだけ実行する」という意味。
+
+モジュールをライブラリとしてインポートする側にとっては、
+テストコードや実行コードが意図せず走らないようにするための大事な仕組み。
+
+</AnswerToggle>
+
+---
+
+## 第4章: 発展（自作パッケージ・サードパーティライブラリ）
+
+> **ポイント:** モジュールを複数まとめると「パッケージ」になる。
+> 外部ライブラリは `pip` でインストールして使う。
+
+---
+
+### 問題 4-1: 自作パッケージを作る
+
+**問題:**
+複数のモジュールをひとつの「パッケージ」にまとめてください。
+
+以下の構造を作成して、`main.py` から両方の関数を使えるようにしてください。
+
+```
+mypackage/
+├── __init__.py       # 空ファイルでOK
+├── greetings.py      # greet(name) 関数を定義
+└── math_utils.py     # square(n)（n²を返す）関数を定義
+
+main.py               # mypackage から関数をインポートして使う
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（パッケージとは）</summary>
+
+Pythonでは、`__init__.py` というファイルが入ったフォルダを「パッケージ」として扱う。
+フォルダ名がそのままパッケージ名になる。
+
+```
+mypackage/          ← フォルダ = パッケージ名
+├── __init__.py     ← これがあるとパッケージと認識される
+└── greetings.py   ← サブモジュール
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント2（インポートの書き方）</summary>
+
+パッケージ内のモジュールをインポートするには:
+```python
+from パッケージ名.モジュール名 import 関数名
+# または
+import パッケージ名.モジュール名
+```
+
+例:
+```python
+from mypackage.greetings import greet
+```
+
+</details>
+
+<details>
+<summary>💡 ヒント3（__init__.py の活用）</summary>
+
+`__init__.py` に何も書かなくてもパッケージは機能する。
+ただし、よく使う関数を `__init__.py` に書いておくと、
+`from mypackage import greet` のようにモジュール名を省略してインポートできる。
+
+</details>
+
+<AnswerToggle>
+
+**mypackage/\_\_init\_\_.py:**
+```python
+# 空でもOK（または以下のようにまとめてインポートしておく）
+from mypackage.greetings import greet
+from mypackage.math_utils import square
+```
+
+**mypackage/greetings.py:**
+```python
+def greet(name):
+    return f"こんにちは、{name}さん！"
+```
+
+**mypackage/math_utils.py:**
+```python
+def square(n):
+    return n ** 2
+```
+
+**main.py（パターン1: モジュール名を使う）:**
+```python
+from mypackage.greetings import greet
+from mypackage.math_utils import square
+
+print(greet("田中"))   # こんにちは、田中さん！
+print(square(5))       # 25
+```
+
+**main.py（パターン2: __init__.py にまとめた場合）:**
+```python
+from mypackage import greet, square
+
+print(greet("鈴木"))   # こんにちは、鈴木さん！
+print(square(9))       # 81
+```
+
+**解説:**
+`__init__.py` はパッケージの「入口」の役割を持つ。
+空のままでも動くが、よく使う関数をここに `import` しておくと
+使う側がシンプルに書けるようになる。
+
+実際のライブラリ（例: `requests`）でも `from requests import get` のように
+書けるのは、`requests` の `__init__.py` に `get` がインポートされているから。
+
+</AnswerToggle>
+
+---
+
+### 問題 4-2: pipとサードパーティライブラリ
+
+**問題:**
+Pythonには標準ライブラリ以外に、`pip` でインストールする外部ライブラリがある。
+以下を理解・確認してください（実際に実行しなくてもOK、読んで理解する問題）。
+
+1. `requests` ライブラリをインストールするコマンドを書け
+2. 以下のコードが何をしているか説明せよ
+3. インストール済みのライブラリ一覧を確認するコマンドを書け
+
+```python
+import requests
+
+response = requests.get("https://api.github.com")
+print(response.status_code)
+print(response.json())
+```
+
+---
+
+<details>
+<summary>💡 ヒント1（pipとは）</summary>
+
+`pip` はPythonのパッケージ管理ツール。
+ターミナル（コマンドプロンプト）で使うもので、Pythonコードの中では書かない。
+
+インストール: `pip install パッケージ名`
+アンインストール: `pip uninstall パッケージ名`
+
+</details>
+
+<details>
+<summary>💡 ヒント2（requestsとは）</summary>
+
+`requests` はHTTPリクエストを送るためのサードパーティライブラリ。
+Webサイトや Web API にアクセスするときに使う。
+
+- `requests.get(URL)` → GETリクエストを送る
+- `response.status_code` → HTTPステータスコード（200=成功、404=見つからない）
+- `response.json()` → レスポンスのJSONをPythonの辞書/リストに変換
+
+</details>
+
+<details>
+<summary>💡 ヒント3（一覧確認）</summary>
+
+`pip list` でインストール済みのパッケージを一覧表示できる。
+`pip show パッケージ名` で特定パッケージの詳細（バージョン、説明など）を確認できる。
+
+</details>
+
+<AnswerToggle>
+
+```bash
+# 1. requests をインストール（ターミナルで実行）
+pip install requests
+
+# 3. インストール済みライブラリの一覧確認
+pip list
+```
+
+**2. コードの説明:**
+```python
+import requests
+
+# GitHub の API に GET リクエストを送る
+response = requests.get("https://api.github.com")
+
+# HTTPステータスコードを表示（200 なら成功）
+print(response.status_code)  # 200
+
+# レスポンスの JSON を Python の辞書として表示
+print(response.json())
+# 例: {'current_user_url': 'https://api.github.com/user', ...}
+```
+
+**解説:**
+標準ライブラリとサードパーティライブラリの違い:
+
+| 種類 | 例 | インストール |
+|------|-----|------------|
+| 標準ライブラリ | `math`, `os`, `datetime` | 不要（Python に同梱） |
+| サードパーティ | `requests`, `numpy`, `pandas` | `pip install` が必要 |
+
+よく使われるサードパーティライブラリ:
+- `requests` → HTTP通信・API呼び出し
+- `numpy` → 数値計算・配列操作
+- `pandas` → データ分析・表データ処理
+- `matplotlib` → グラフ描画
+- `flask` / `fastapi` → Webアプリ開発
+
+</AnswerToggle>
+
+---
+
+### 問題 4-3: `__init__.py` でパッケージの公開APIを設計する
+
+**問題:**
+以下のパッケージを作成し、`__init__.py` を使って「外から使える機能」と「内部実装」を整理してください。
+
+```
+calculator/
+├── __init__.py    # add と subtract だけを外部公開する
+├── basic.py       # add(a, b), subtract(a, b), _validate(a, b) を定義
+└── advanced.py    # multiply(a, b), divide(a, b) を定義（ただし今回は非公開）
+```
+
+`main.py` で以下が動くようにせよ:
+```python
+from calculator import add, subtract
+
+print(add(3, 5))       # 8
+print(subtract(10, 4)) # 6
+```
+
+また、`_validate` のようにアンダースコアで始まる名前の意味を説明せよ。
+
+---
+
+<details>
+<summary>💡 ヒント1</summary>
+
+`__init__.py` には「このパッケージから外部に公開したい関数」だけをインポートして書く。
+`advanced.py` のものは書かなければ、`from calculator import multiply` はエラーになる。
+
+</details>
+
+<details>
+<summary>💡 ヒント2（アンダースコアの意味）</summary>
+
+Pythonの慣習として、アンダースコア `_` で始まる名前は「内部用（プライベート）」を意味する。
+強制的に隠されるわけではないが、「外から直接呼ばないでほしい」というシグナル。
+
+- `_validate` → 内部でのみ使う補助関数
+- `validate` → 外部から使ってもいい公開関数
+
+</details>
+
+<details>
+<summary>💡 ヒント3</summary>
+
+```python
+# basic.py の中
+def _validate(a, b):
+    # 両方が数値かチェックする内部関数
+    if not (isinstance(a, (int, float)) and isinstance(b, (int, float))):
+        raise TypeError("数値を入力してください")
+
+def add(a, b):
+    _validate(a, b)
+    return a + b
+```
+
+</details>
+
+<AnswerToggle>
+
+**calculator/basic.py:**
+```python
+def _validate(a, b):
+    """内部用バリデーション関数（外部から直接呼ばない）"""
+    if not (isinstance(a, (int, float)) and isinstance(b, (int, float))):
+        raise TypeError("数値を入力してください")
+
+def add(a, b):
+    _validate(a, b)
+    return a + b
+
+def subtract(a, b):
+    _validate(a, b)
+    return a - b
+```
+
+**calculator/advanced.py:**
+```python
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b == 0:
+        raise ValueError("0では割れません")
+    return a / b
+```
+
+**calculator/\_\_init\_\_.py:**
+```python
+# add と subtract だけを公開する
+from calculator.basic import add, subtract
+
+# advanced.py の機能はここに書かないので外部から直接は使えない
+```
+
+**main.py:**
+```python
+from calculator import add, subtract
+
+print(add(3, 5))       # 8
+print(subtract(10, 4)) # 6
+
+# これはエラーになる（公開していないので）
+# from calculator import multiply  # ImportError
+```
+
+**解説:**
+`_` で始まる名前は「このモジュールの内部実装」を示す慣習。
+`from calculator import *` のようなワイルドカードインポートでも
+`_validate` は含まれない（Pythonが自動で除外する）。
+
+パッケージの設計では「何を公開して何を隠すか」を意識することが重要で、
+`__init__.py` はそのコントロールポイントとして機能する。
+
+</AnswerToggle>
+
+---
+
+# まとめ：モジュール・import構文の使い分け
+
+| 構文 | 書き方 | 使いどころ |
+|------|--------|-----------|
+| 基本import | `import math` | モジュール名を明示して使いたい |
+| from import | `from math import sqrt` | 特定の機能だけ使いたい・毎回 `math.` と書くのが冗長 |
+| エイリアス | `import numpy as np` | 慣習的な短縮名がある・長い名前を短くしたい |
+| 自作モジュール | `import myutils` | 共通関数を複数ファイルで再利用したい |
+
+## よく使う標準ライブラリ 早見表
+
+| モジュール | 主な用途 | よく使う機能 |
+|-----------|---------|------------|
+| `math` | 数学計算 | `sqrt()`, `pi`, `ceil()`, `floor()` |
+| `random` | 乱数生成 | `randint()`, `choice()`, `shuffle()` |
+| `os` | OS・ファイル操作 | `getcwd()`, `listdir()`, `path.join()` |
+| `datetime` | 日付・時刻 | `date.today()`, `timedelta`, `strftime()` |
+| `json` | JSON読み書き | `loads()`, `dumps()`, `load()`, `dump()` |
+| `sys` | Pythonインタプリタ操作 | `argv`, `exit()`, `path` |
+| `re` | 正規表現 | `search()`, `findall()`, `sub()` |
+
+---
+
+*最終更新: 2026年4月*

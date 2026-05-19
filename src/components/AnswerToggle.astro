@@ -1,0 +1,13 @@
+---
+const { label = "解答を見る" } = Astro.props;
+---
+
+<details class="answer-toggle">
+  <summary>
+    <span class="answer-toggle__closed">{label}</span>
+    <span class="answer-toggle__open">解答を閉じる</span>
+  </summary>
+  <div class="answer-toggle__body">
+    <slot />
+  </div>
+</details>
