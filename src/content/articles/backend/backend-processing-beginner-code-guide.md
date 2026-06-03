@@ -61,21 +61,16 @@ app.py や scripts/analyze_local_article.py が結果を表示・保存する
 <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-  U["ユーザーがURLを入力"] --> A["analyze_url()\n全体処理の入口"]
-  A --> S["load_settings()\n取得設定を読む"]
-  S --> F["fetch_html()\nURLを検証してHTMLを取得"]
-  F --> P["parse_article()\nHTMLから記事情報を抽出"]
-  P --> AR["analyze_article()\n取得済み記事を分析へ渡す"]
-  AR --> E["analyze_claim_evidence()\n見出しと本文根拠を比較"]
-  E --> C["classify()\n差分一覧から最終判定"]
-  C --> R["AnalysisResult\n画面表示・Markdown出力用に集約"]
-
-  classDef input fill:#e8f5f0,stroke:#27745d,color:#123b30;
-  classDef process fill:#eef4ff,stroke:#3f64a8,color:#182f5f;
-  classDef result fill:#fff2e5,stroke:#b45f06,color:#5f2f00;
-  class U input;
-  class A,S,F,P,AR,E,C process;
-  class R result;
+  step1["ユーザーがURLを入力"]
+  step2["analyze_url 全体処理の入口"]
+  step3["load_settings 取得設定を読む"]
+  step4["fetch_html URLを検証してHTMLを取得"]
+  step5["parse_article HTMLから記事情報を抽出"]
+  step6["analyze_article 取得済み記事を分析へ渡す"]
+  step7["analyze_claim_evidence 見出しと本文根拠を比較"]
+  step8["classify 差分一覧から最終判定"]
+  step9["AnalysisResult 画面表示とMarkdown出力用に集約"]
+  step1 --> step2 --> step3 --> step4 --> step5 --> step6 --> step7 --> step8 --> step9
 </pre>
 </div>
 
@@ -124,19 +119,15 @@ flowchart TD
 <div class="diagram">
 <pre class="mermaid">
 flowchart LR
-  Raw["URL / ローカルMarkdown"] --> Article["Article\n記事1本分の情報"]
-  Article --> Claim["ClaimEvidence\n主張候補ごとの根拠探索結果"]
-  Claim --> Diff["Difference\n判定に使う差分だけを抽出"]
-  Article --> Result["AnalysisResult\n最終結果の全部入り"]
-  Claim --> Result
-  Diff --> Result
-
-  classDef source fill:#f4f4f5,stroke:#71717a,color:#27272a;
-  classDef data fill:#e8f5f0,stroke:#27745d,color:#123b30;
-  classDef result fill:#fff2e5,stroke:#b45f06,color:#5f2f00;
-  class Raw source;
-  class Article,Claim,Diff data;
-  class Result result;
+  data1["URLまたはローカルMarkdown"]
+  data2["Article 記事1本分の情報"]
+  data3["ClaimEvidence 主張候補ごとの根拠探索結果"]
+  data4["Difference 判定に使う差分だけを抽出"]
+  data5["AnalysisResult 最終結果の全部入り"]
+  data1 --> data2 --> data3 --> data4
+  data2 --> data5
+  data3 --> data5
+  data4 --> data5
 </pre>
 </div>
 
@@ -676,24 +667,23 @@ def parse_local_article_markdown(
 <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-  H["見出し"] --> HC["extract_headline_claims()\n主張候補を取り出す"]
-  B["本文"] --> BU["split_body_units()\n本文を短い単位へ分ける"]
-  HC --> AS["analyze_single_claim()\n主張候補を1つずつ分析"]
-  BU --> AS
-  AS --> CS["correspondence_score()\n対応度と一致語を計算"]
-  CS --> ES["classify_evidence_strength()\n本文側の根拠強度"]
-  AS --> HS["classify_headline_strength()\n見出し側の表現強度"]
-  ES --> CMP["compare_strengths()\n見出しと本文根拠を比較"]
-  HS --> CMP
-  CMP --> D["Difference\n差分ありなら作成"]
-  AS --> CE["ClaimEvidence\n途中結果も保存"]
-
-  classDef text fill:#f4f4f5,stroke:#71717a,color:#27272a;
-  classDef logic fill:#eef4ff,stroke:#3f64a8,color:#182f5f;
-  classDef output fill:#fff2e5,stroke:#b45f06,color:#5f2f00;
-  class H,B text;
-  class HC,BU,AS,CS,ES,HS,CMP logic;
-  class D,CE output;
+  rule1["見出し"]
+  rule2["本文"]
+  rule3["extract_headline_claims 主張候補を取り出す"]
+  rule4["split_body_units 本文を短い単位へ分ける"]
+  rule5["analyze_single_claim 主張候補を1つずつ分析"]
+  rule6["correspondence_score 対応度と一致語を計算"]
+  rule7["classify_evidence_strength 本文側の根拠強度"]
+  rule8["classify_headline_strength 見出し側の表現強度"]
+  rule9["compare_strengths 見出しと本文根拠を比較"]
+  rule10["Difference 差分ありなら作成"]
+  rule11["ClaimEvidence 途中結果も保存"]
+  rule1 --> rule3 --> rule5
+  rule2 --> rule4 --> rule5
+  rule5 --> rule6 --> rule7 --> rule9
+  rule5 --> rule8 --> rule9
+  rule9 --> rule10
+  rule5 --> rule11
 </pre>
 </div>
 
@@ -1324,22 +1314,24 @@ Pythonでは、`True` は数値としては `1`、`False` は `0` として扱�
 <div class="diagram">
 <pre class="mermaid">
 flowchart TD
-  D["differences\n差分一覧"] --> SC["強い差分の数を数える"]
-  SC --> Q1{"strong_count >= 1 ?"}
-  Q1 -->|はい| EX1["誇張の可能性が高い"]
-  Q1 -->|いいえ| MC["中程度の差分の数を数える"]
-  MC --> Q2{"medium_count >= 2 ?"}
-  Q2 -->|はい| EX2["誇張の可能性が高い"]
-  Q2 -->|いいえ| Q3{"medium_count == 1 ?"}
-  Q3 -->|はい| C1["整合\n注意点として表示"]
-  Q3 -->|いいえ| C2["整合\n大きな差分なし"]
-
-  classDef decision fill:#fff7ed,stroke:#c2410c,color:#7c2d12;
-  classDef resultBad fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d;
-  classDef resultGood fill:#dcfce7,stroke:#15803d,color:#14532d;
-  class Q1,Q2,Q3 decision;
-  class EX1,EX2 resultBad;
-  class C1,C2 resultGood;
+  judge1["differences 差分一覧"]
+  judge2["強い差分の数を数える"]
+  judge3{"強い差分が1件以上ある"}
+  judge4["誇張の可能性が高い"]
+  judge5["中程度の差分の数を数える"]
+  judge6{"中程度の差分が2件以上ある"}
+  judge7["誇張の可能性が高い"]
+  judge8{"中程度の差分が1件だけある"}
+  judge9["整合 注意点として表示"]
+  judge10["整合 大きな差分なし"]
+  judge1 --> judge2 --> judge3
+  judge3 -->|はい| judge4
+  judge3 -->|いいえ| judge5
+  judge5 --> judge6
+  judge6 -->|はい| judge7
+  judge6 -->|いいえ| judge8
+  judge8 -->|はい| judge9
+  judge8 -->|いいえ| judge10
 </pre>
 </div>
 
