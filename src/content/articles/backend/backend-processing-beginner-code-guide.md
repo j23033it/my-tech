@@ -56,6 +56,37 @@ AnalysisResult に結果をまとめる
 app.py や scripts/analyze_local_article.py が結果を表示・保存する
 ```
 
+同じ流れを図にすると、次のようになります。最初は関数名を全部覚えるより、「取得」「抽出」「比較」「判定」「表示」の5段階で見ると追いやすいです。
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  U["ユーザーがURLを入力"] --> A["analyze_url()\n全体処理の入口"]
+  A --> S["load_settings()\n取得設定を読む"]
+  S --> F["fetch_html()\nURLを検証してHTMLを取得"]
+  F --> P["parse_article()\nHTMLから記事情報を抽出"]
+  P --> AR["analyze_article()\n取得済み記事を分析へ渡す"]
+  AR --> E["analyze_claim_evidence()\n見出しと本文根拠を比較"]
+  E --> C["classify()\n差分一覧から最終判定"]
+  C --> R["AnalysisResult\n画面表示・Markdown出力用に集約"]
+
+  classDef input fill:#e8f5f0,stroke:#27745d,color:#123b30;
+  classDef process fill:#eef4ff,stroke:#3f64a8,color:#182f5f;
+  classDef result fill:#fff2e5,stroke:#b45f06,color:#5f2f00;
+  class U input;
+  class A,S,F,P,AR,E,C process;
+  class R result;
+</pre>
+</div>
+
+| 段階 | 主な関数・ファイル | 入力 | 出力 | 初心者が見るポイント |
+|---|---|---|---|---|
+| 取得 | `fetch_html()` / `src/article_fetcher.py` | URL | HTML文字列 | URL形式、HTTPエラー、文字コード |
+| 抽出 | `parse_article()` / `src/article_parser.py` | HTML文字列 | `Article` | タイトル・本文・日付・媒体名の取り出し |
+| 分析 | `analyze_claim_evidence()` / `src/evidence_rules.py` | 見出し、本文 | `ClaimEvidence` と `Difference` | 主張候補、対応文、表現強度、根拠強度 |
+| 判定 | `classify()` / `src/classifier.py` | 差分一覧 | 判定ラベル、理由 | 強い差分・中程度の差分の数え方 |
+| 表示 | `ui_helpers.py` やCLI | `AnalysisResult` | 表示用の行データ、Markdown | 内部データを人が読める形へ変換 |
+
 各ファイルの役割は次のとおりです。
 
 | ファイル | 主な役割 |
@@ -87,6 +118,34 @@ app.py や scripts/analyze_local_article.py が結果を表示・保存する
 | `ClaimEvidence` | 見出しから取り出した1つの主張候補と、それに対応する本文根拠 |
 | `Difference` | 見出しと本文根拠の間に見つかった差分 |
 | `AnalysisResult` | 最終的な分析結果の全部入りデータ |
+
+4つのデータは、次の順番で作られていきます。
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  Raw["URL / ローカルMarkdown"] --> Article["Article\n記事1本分の情報"]
+  Article --> Claim["ClaimEvidence\n主張候補ごとの根拠探索結果"]
+  Claim --> Diff["Difference\n判定に使う差分だけを抽出"]
+  Article --> Result["AnalysisResult\n最終結果の全部入り"]
+  Claim --> Result
+  Diff --> Result
+
+  classDef source fill:#f4f4f5,stroke:#71717a,color:#27272a;
+  classDef data fill:#e8f5f0,stroke:#27745d,color:#123b30;
+  classDef result fill:#fff2e5,stroke:#b45f06,color:#5f2f00;
+  class Raw source;
+  class Article,Claim,Diff data;
+  class Result result;
+</pre>
+</div>
+
+| データ | 作られる主な場所 | 次に使われる場所 | 役割のイメージ |
+|---|---|---|---|
+| `Article` | `parse_article()`、`parse_local_article_markdown()` | `analyze_article()` | 記事を分析に渡すための共通フォーマット |
+| `ClaimEvidence` | `analyze_single_claim()` | 画面表示、差分生成 | 主張候補ごとの詳しい途中結果 |
+| `Difference` | `analyze_claim_evidence()` | `classify()`、表示用テーブル | 最終判定に使う注意点 |
+| `AnalysisResult` | `analyze_article()` | `app.py`、CLI、Markdown出力 | 画面や保存処理に渡す完成データ |
 
 該当する実コードは次の部分です。
 
@@ -611,6 +670,41 @@ def parse_local_article_markdown(
 4. 本文側の根拠強度を判定する。
 5. 見出し側の表現強度を判定する。
 6. 両者を比較して差分を作る。
+
+この6つを、1つの主張候補に注目して図にすると次のようになります。
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  H["見出し"] --> HC["extract_headline_claims()\n主張候補を取り出す"]
+  B["本文"] --> BU["split_body_units()\n本文を短い単位へ分ける"]
+  HC --> AS["analyze_single_claim()\n主張候補を1つずつ分析"]
+  BU --> AS
+  AS --> CS["correspondence_score()\n対応度と一致語を計算"]
+  CS --> ES["classify_evidence_strength()\n本文側の根拠強度"]
+  AS --> HS["classify_headline_strength()\n見出し側の表現強度"]
+  ES --> CMP["compare_strengths()\n見出しと本文根拠を比較"]
+  HS --> CMP
+  CMP --> D["Difference\n差分ありなら作成"]
+  AS --> CE["ClaimEvidence\n途中結果も保存"]
+
+  classDef text fill:#f4f4f5,stroke:#71717a,color:#27272a;
+  classDef logic fill:#eef4ff,stroke:#3f64a8,color:#182f5f;
+  classDef output fill:#fff2e5,stroke:#b45f06,color:#5f2f00;
+  class H,B text;
+  class HC,BU,AS,CS,ES,HS,CMP logic;
+  class D,CE output;
+</pre>
+</div>
+
+| 処理 | 何を見るか | 何を決めるか |
+|---|---|---|
+| 主張候補抽出 | 見出し内の引用、数値、強い語、末尾表現 | 本文と照合する単位 |
+| 本文分割 | 段落、文末記号、長すぎる段落 | 比較対象にする本文文 |
+| 対応度計算 | 重要語の一致、数値一致、語の近さ | 一番対応していそうな本文文 |
+| 根拠強度判定 | 確定表現、公式情報、弱い推測表現 | 本文側の根拠の強さ |
+| 見出し強度判定 | 強い見出し語、中程度表現、弱い表現 | 見出し側の表現の強さ |
+| 差分生成 | 見出し強度と根拠強度の組み合わせ | 注意点として出す差分 |
 
 ### 入口: `analyze_claim_evidence()`
 
@@ -1224,6 +1318,37 @@ Pythonでは、`True` は数値としては `1`、`False` は `0` として扱�
 | 中程度の差分が2件以上 | 誇張の可能性が高い |
 | 中程度の差分が1件 | 整合。ただし注意点として表示 |
 | 差分なし | 整合 |
+
+最終判定だけを図にすると、次のような分岐です。
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  D["differences\n差分一覧"] --> SC["強い差分の数を数える"]
+  SC --> Q1{"strong_count >= 1 ?"}
+  Q1 -->|はい| EX1["誇張の可能性が高い"]
+  Q1 -->|いいえ| MC["中程度の差分の数を数える"]
+  MC --> Q2{"medium_count >= 2 ?"}
+  Q2 -->|はい| EX2["誇張の可能性が高い"]
+  Q2 -->|いいえ| Q3{"medium_count == 1 ?"}
+  Q3 -->|はい| C1["整合\n注意点として表示"]
+  Q3 -->|いいえ| C2["整合\n大きな差分なし"]
+
+  classDef decision fill:#fff7ed,stroke:#c2410c,color:#7c2d12;
+  classDef resultBad fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d;
+  classDef resultGood fill:#dcfce7,stroke:#15803d,color:#14532d;
+  class Q1,Q2,Q3 decision;
+  class EX1,EX2 resultBad;
+  class C1,C2 resultGood;
+</pre>
+</div>
+
+| 強い差分数 | 中程度の差分数 | 最終判定 | 画面上の扱い |
+|---:|---:|---|---|
+| 1以上 | いくつでも | 誇張の可能性が高い | 強い注意として表示 |
+| 0 | 2以上 | 誇張の可能性が高い | 複数の注意点として表示 |
+| 0 | 1 | 整合 | 注意点として表示 |
+| 0 | 0 | 整合 | 大きな差分なし |
 
 ## 結果を表形式へ整える: `src/ui_helpers.py`
 
